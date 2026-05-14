@@ -1,0 +1,2368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Paul Bunyan's Trip Guide — Brainerd, MN</title>
+<style>
+  :root {
+    color-scheme: light;
+    /* Paul Bunyan palette */
+    --plaid-red: #a32424;
+    --plaid-red-dark: #6e1818;
+    --plaid-black: #1a1a1a;
+    --pine: #1f4030;
+    --pine-deep: #14291f;
+    --moss: #4a6b4c;
+    --moss-soft: #e3ebde;
+    --wood: #8b5a2b;
+    --wood-light: #b88a5a;
+    --cream: #f6ecd2;
+    --cream-soft: #fbf6e6;
+    --parchment: #f3e1b8;
+    --ox-blue: #4a78b8;
+    --ox-blue-soft: #dbe5f1;
+    --ink: #2a2018;
+    --muted: #6a5a48;
+    --line: #ddd1b2;
+    --star: #d6a32a;
+    --shadow: 0 1px 2px rgba(60,40,20,.06), 0 6px 20px rgba(60,40,20,.08);
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: "Georgia", "Times New Roman", serif;
+    background:
+      linear-gradient(rgba(246,236,210,0.92), rgba(246,236,210,0.92)),
+      repeating-linear-gradient(90deg, transparent 0 80px, rgba(139,90,43,0.04) 80px 81px),
+      repeating-linear-gradient(0deg, transparent 0 80px, rgba(139,90,43,0.04) 80px 81px),
+      var(--cream);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* Buffalo plaid pattern for header */
+  .plaid {
+    background-color: var(--plaid-red);
+    background-image:
+      linear-gradient(rgba(0,0,0,0.45) 50%, transparent 50%),
+      linear-gradient(90deg, rgba(0,0,0,0.45) 50%, transparent 50%);
+    background-size: 28px 28px;
+    background-blend-mode: multiply, multiply;
+  }
+
+  .app {
+    display: grid;
+    grid-template-columns: 1fr 290px;
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-areas:
+      "header header"
+      "prompts prompts"
+      "chat   sidebar"
+      "input  sidebar";
+    height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 12px;
+    padding: 12px;
+  }
+  @media (max-width: 820px) {
+    .app {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "header"
+        "prompts"
+        "chat"
+        "input"
+        "sidebar";
+      grid-template-rows: auto auto minmax(300px, 1fr) auto auto;
+      height: auto;
+      min-height: 100vh;
+    }
+    .sidebar {
+      max-height: none;
+      order: 5;
+    }
+    header.banner { grid-template-columns: 1fr; min-height: auto; }
+    .banner-art { min-height: 140px; border-right: none; border-bottom: 3px solid var(--plaid-black); }
+    .banner-info h1 { font-size: 24px; }
+    .banner-info .sub { font-size: 13px; }
+    .banner-info { padding: 14px 18px; }
+    .prompts-bar { flex-wrap: wrap; }
+    .prompts-bar .label { border-right: none; padding-right: 0; padding-bottom: 4px; width: 100%; }
+    .vibe-row { padding: 8px 10px; }
+    .vibe-hint { display: none; }
+    .chips { padding: 8px 10px; }
+    .chip { font-size: 12px; padding: 5px 10px; }
+    .msg { max-width: 95%; font-size: 14.5px; }
+    .input-wrap input { font-size: 16px; } /* prevents iOS zoom-in on focus */
+  }
+  @media (max-width: 500px) {
+    header.banner { grid-template-columns: auto 1fr; }
+    .trip-dates {
+      grid-column: 1 / -1;
+      border-left: none;
+      border-top: 3px solid var(--plaid-black);
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 12px;
+    }
+    .trip-dates .label { font-size: 11px; }
+  }
+
+  /* ===================== HEADER ===================== */
+  header.banner {
+    grid-area: header;
+    border-radius: var(--radius);
+    padding: 0;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 3px solid var(--plaid-black);
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    align-items: stretch;
+    min-height: 180px;
+  }
+  .banner-art {
+    background: linear-gradient(180deg, #2a4a78 0%, #1f4030 60%, #14291f 100%);
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    border-right: 3px solid var(--plaid-black);
+    position: relative;
+    overflow: hidden;
+  }
+  .banner-art svg { display: block; width: 100%; height: 100%; }
+  .banner-info {
+    padding: 18px 26px;
+    color: var(--cream);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background:
+      repeating-linear-gradient(45deg, transparent 0 30px, rgba(255,255,255,0.025) 30px 31px),
+      var(--plaid-red);
+  }
+  .banner-info h1 {
+    margin: 0;
+    font-size: 34px;
+    font-family: "Impact", "Bebas Neue", "Arial Black", sans-serif;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 0 var(--plaid-black);
+    line-height: 1.05;
+  }
+  .banner-info .sub {
+    font-size: 15px;
+    color: var(--cream);
+    opacity: 0.95;
+    margin-top: 6px;
+    font-style: italic;
+    font-family: Georgia, serif;
+  }
+  .banner-dates {
+    margin-top: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0,0,0,0.25);
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(246,236,210,0.3);
+    font-family: Georgia, serif;
+    font-size: 13.5px;
+    align-self: flex-start;
+  }
+  .banner-dates .dates {
+    font-family: "Impact", sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.03em;
+  }
+  .banner-dates .divider {
+    width: 1px; height: 18px;
+    background: rgba(246,236,210,0.4);
+  }
+
+  /* ===================== ROTATING PROMPTS ===================== */
+  .prompts-bar {
+    grid-area: prompts;
+    background: var(--parchment);
+    border: 2px solid var(--wood);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow);
+  }
+  .prompts-bar .label {
+    font-family: "Impact", sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: var(--plaid-red-dark);
+    text-transform: uppercase;
+    flex-shrink: 0;
+    border-right: 2px dashed var(--wood);
+    padding-right: 12px;
+  }
+  .prompts-bar .prompts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex: 1;
+  }
+  .prompt-pill {
+    background: var(--cream-soft);
+    border: 1.5px solid var(--wood);
+    color: var(--ink);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: Georgia, serif;
+    transition: all 0.15s;
+  }
+  .prompt-pill:hover {
+    background: var(--plaid-red);
+    color: var(--cream);
+    border-color: var(--plaid-red-dark);
+  }
+  .prompt-pill.funny {
+    background: var(--ox-blue-soft);
+    border-color: var(--ox-blue);
+    font-style: italic;
+  }
+  .prompt-pill.funny:hover {
+    background: var(--ox-blue);
+    color: white;
+  }
+  .reroll-btn {
+    background: var(--pine);
+    color: var(--cream);
+    border: none;
+    border-radius: 999px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: "Impact", sans-serif;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .reroll-btn:hover { background: var(--pine-deep); }
+
+  /* ===================== CHAT ===================== */
+  .chat-wrap {
+    grid-area: chat;
+    background: var(--cream-soft);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 2px solid var(--wood);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--line);
+    background: var(--parchment);
+  }
+  .chip {
+    background: var(--pine);
+    color: var(--cream);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: "Impact", sans-serif;
+    letter-spacing: 0.03em;
+    transition: all 0.15s;
+  }
+  .chip:hover { background: var(--pine-deep); transform: translateY(-1px); }
+  .chip.red { background: var(--plaid-red); }
+  .chip.red:hover { background: var(--plaid-red-dark); }
+  .chip.wood { background: var(--wood); }
+  .chip.wood:hover { background: #6b4220; }
+
+  /* User identity bar (above chips) */
+  .identity-bar {
+    background: var(--parchment);
+    border-bottom: 2px solid var(--line);
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .identity-bar .who-label {
+    font-family: "Impact", sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .identity-bar .who-pill {
+    background: white;
+    border: 1.5px solid var(--wood);
+    border-radius: 999px;
+    padding: 3px 12px;
+    font-weight: 600;
+    color: var(--pine-deep);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .identity-bar .switch-btn {
+    background: none;
+    border: none;
+    color: var(--plaid-red);
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: Georgia, serif;
+    padding: 0 2px;
+  }
+  .identity-bar .switch-btn:hover { color: var(--plaid-red-dark); }
+
+  /* User picker card */
+  .user-picker {
+    background: white;
+    border: 2px solid var(--wood);
+    border-radius: 12px;
+    padding: 18px;
+    margin: 0;
+    box-shadow: var(--shadow);
+  }
+  .user-picker h3 {
+    margin: 0 0 6px 0;
+    color: var(--plaid-red-dark);
+    font-family: "Impact", sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.03em;
+  }
+  .user-picker .picker-sub {
+    color: var(--muted);
+    font-size: 13.5px;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+  .user-picker .group-label {
+    font-family: "Impact", sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--wood);
+    text-transform: uppercase;
+    margin: 10px 0 6px 0;
+  }
+  .user-picker .user-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .user-picker .user-btn {
+    background: var(--cream-soft);
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 6px;
+    cursor: pointer;
+    font-family: Georgia, serif;
+    font-size: 13.5px;
+    text-align: center;
+    transition: all 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .user-picker .user-btn:hover {
+    background: var(--parchment);
+    border-color: var(--plaid-red);
+    transform: translateY(-1px);
+  }
+  .user-picker .user-btn .user-emoji {
+    font-size: 24px;
+    line-height: 1;
+  }
+  .user-picker .user-btn .user-name {
+    font-weight: 600;
+    color: var(--pine-deep);
+  }
+
+  /* Vibe filter row */
+  .vibe-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--line);
+    background: var(--cream-soft);
+  }
+  .vibe-row .label {
+    font-family: "Impact", sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+  .vibe-pill {
+    background: white;
+    border: 1.5px solid var(--line);
+    color: var(--muted);
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    cursor: pointer;
+    font-family: Georgia, serif;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    opacity: 0.6;
+  }
+  .vibe-pill:hover { opacity: 0.85; }
+  .vibe-pill.active {
+    opacity: 1;
+    color: white;
+    font-weight: 600;
+  }
+  .vibe-pill.active.classic { background: var(--pine); border-color: var(--pine-deep); }
+  .vibe-pill.active.dive { background: var(--wood); border-color: #6b4220; }
+  .vibe-pill.active.modern { background: var(--ox-blue); border-color: #3a5e8f; }
+  .vibe-pill.classic.active::before { content: "✓ "; }
+  .vibe-pill.dive.active::before { content: "✓ "; }
+  .vibe-pill.modern.active::before { content: "✓ "; }
+  .vibe-hint {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-style: italic;
+    margin-left: auto;
+  }
+
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .msg {
+    max-width: 90%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.55;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: var(--plaid-red);
+    color: var(--cream);
+    border-bottom-right-radius: 4px;
+    font-family: Georgia, serif;
+  }
+  .msg.bot {
+    align-self: flex-start;
+    background: white;
+    color: var(--ink);
+    border-bottom-left-radius: 4px;
+    border: 1.5px solid var(--line);
+    box-shadow: 0 1px 3px rgba(60,40,20,0.04);
+  }
+  .msg.bot.thinking { font-style: italic; color: var(--muted); border-style: dashed; }
+  .msg.bot a { color: var(--plaid-red); text-decoration: underline; }
+  .msg.bot strong { color: var(--pine-deep); }
+  .msg.bot h3 {
+    margin: 10px 0 4px 0;
+    font-size: 14px;
+    color: var(--plaid-red-dark);
+    font-family: "Impact", sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .msg.bot ul { margin: 4px 0 4px 18px; padding: 0; }
+  .msg.bot li { margin: 4px 0; }
+  .msg.bot .place {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--cream-soft);
+    border: 1.5px solid var(--wood);
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin: 2px 4px 2px 0;
+    font-size: 13.5px;
+    font-weight: bold;
+    color: var(--pine-deep);
+    font-family: Georgia, serif;
+  }
+  .msg.bot .star-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #c5b18c;
+    font-size: 16px;
+    padding: 0 2px;
+    line-height: 1;
+  }
+  .msg.bot .star-btn.starred { color: var(--star); }
+  .msg.bot .star-btn:hover { color: var(--star); }
+  .msg.bot .msg-actions {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--line);
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+  .msg.bot .save-msg-btn {
+    background: var(--cream-soft);
+    border: 1.5px solid var(--wood);
+    color: var(--wood);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: Georgia, serif;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .msg.bot .save-msg-btn:hover { background: var(--wood); color: var(--cream); }
+  .msg.bot .save-msg-btn.saved {
+    background: var(--pine);
+    color: var(--cream);
+    border-color: var(--pine-deep);
+  }
+  .msg.bot .quote {
+    border-left: 3px solid var(--wood);
+    padding: 2px 0 2px 10px;
+    margin: 6px 0;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+
+  /* ===================== INPUT ===================== */
+  .input-wrap {
+    grid-area: input;
+    background: var(--cream-soft);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 2px solid var(--wood);
+    padding: 12px;
+    display: flex;
+    gap: 8px;
+  }
+  .input-wrap input {
+    flex: 1;
+    border: 1.5px solid var(--line);
+    background: white;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 15px;
+    font-family: Georgia, serif;
+    color: var(--ink);
+    outline: none;
+  }
+  .input-wrap input:focus { border-color: var(--plaid-red); }
+  .input-wrap input::placeholder { color: var(--muted); font-style: italic; }
+  .input-wrap button {
+    background: var(--plaid-red);
+    color: var(--cream);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: "Impact", sans-serif;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: background 0.15s;
+  }
+  .input-wrap button:hover { background: var(--plaid-red-dark); }
+  .input-wrap button:disabled { background: #b8aa90; cursor: not-allowed; }
+
+  /* ===================== SIDEBAR ===================== */
+  .sidebar {
+    grid-area: sidebar;
+    background: var(--cream-soft);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 2px solid var(--wood);
+    padding: 14px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .sidebar h2 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--plaid-red-dark);
+    font-family: "Impact", sans-serif;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0 0 6px 0;
+    border-bottom: 2px solid var(--wood);
+    padding-bottom: 4px;
+  }
+  .family-card {
+    background: var(--parchment);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    border: 1.5px solid var(--wood);
+    position: relative;
+  }
+  .family-card .who {
+    font-weight: 700;
+    color: var(--plaid-red-dark);
+    margin-bottom: 6px;
+    font-family: "Impact", sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 13px;
+  }
+  /* Sidebar tabs */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    border-bottom: 2px solid var(--wood);
+    margin-bottom: 8px;
+  }
+  .tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 8px 6px;
+    font-family: "Impact", sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+  .tab.active { color: var(--plaid-red-dark); border-bottom-color: var(--plaid-red); }
+  .tab:hover { color: var(--ink); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Saved Places categorized list */
+  .saved-cat {
+    margin-bottom: 12px;
+  }
+  .saved-cat-header {
+    font-family: "Impact", sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--wood);
+    margin: 0 0 4px 0;
+    padding: 4px 6px;
+    background: var(--parchment);
+    border-radius: 4px;
+  }
+  .saved-cat ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .saved-cat li {
+    background: white;
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+  }
+  .saved-cat .fav-name {
+    font-weight: 600;
+    color: var(--pine-deep);
+    flex: 1;
+    line-height: 1.2;
+  }
+  .saved-cat .place-actions {
+    display: flex;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .saved-cat .place-actions a,
+  .saved-cat .place-actions button {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 3px 4px;
+    line-height: 1;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+  .saved-cat .place-actions a:hover { color: var(--ox-blue); background: var(--ox-blue-soft); }
+  .saved-cat .place-actions button:hover { color: var(--plaid-red); background: var(--cream-soft); }
+  .map-all-btn {
+    background: var(--ox-blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-family: "Impact", sans-serif;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .map-all-btn:hover { background: #3a5e8f; }
+  .map-all-btn.disabled {
+    background: #b8aa90;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+  .empty {
+    color: var(--muted);
+    font-size: 13px;
+    font-style: italic;
+  }
+  .typing-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin: 0 1px;
+    background: var(--wood);
+    border-radius: 50%;
+    animation: blink 1.2s infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink {
+    0%, 60%, 100% { opacity: 0.3; }
+    30% { opacity: 1; }
+  }
+  .clear-btn {
+    background: transparent;
+    border: 1.5px solid var(--wood);
+    color: var(--muted);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-family: Georgia, serif;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+  .clear-btn:hover { color: var(--plaid-red); border-color: var(--plaid-red); }
+  .notes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .notes-list li {
+    background: white;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12.5px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .notes-list .note-q {
+    font-weight: 600;
+    color: var(--pine-deep);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  .notes-list .note-a {
+    color: var(--muted);
+    font-size: 11.5px;
+    line-height: 1.35;
+    max-height: 3.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+  .notes-list .note-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .notes-list .note-actions button {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 4px;
+  }
+  .notes-list .note-actions button:hover { color: var(--plaid-red); }
+  .export-btn {
+    background: var(--pine);
+    color: var(--cream);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-family: "Impact", sans-serif;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 4px;
+  }
+  .export-btn:hover { background: var(--pine-deep); }
+  .export-btn:disabled {
+    background: #b8aa90;
+    cursor: not-allowed;
+  }
+  .footer-note {
+    font-size: 11.5px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px dashed var(--line);
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- =================== HEADER =================== -->
+  <header class="banner">
+    <div class="banner-art">
+      <!-- Paul Bunyan + Babe SVG (vintage tourism poster style) — inspired by the Bemidji statues -->
+      <svg viewBox="0 0 280 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-label="Paul Bunyan and Babe the Blue Ox">
+        <defs>
+          <pattern id="plaid" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+            <rect width="14" height="14" fill="#2d5e4a"/>
+            <rect width="7" height="14" fill="#1f4030" opacity="0.6"/>
+            <rect width="14" height="7" fill="#1f4030" opacity="0.6"/>
+            <rect width="7" height="7" fill="#0f2a1f" opacity="0.55"/>
+            <line x1="0" y1="0" x2="14" y2="0" stroke="#f6ecd2" stroke-width="0.4" opacity="0.25"/>
+            <line x1="0" y1="0" x2="0" y2="14" stroke="#f6ecd2" stroke-width="0.4" opacity="0.25"/>
+          </pattern>
+          <linearGradient id="daySky" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#a0d4ea"/>
+            <stop offset="60%" stop-color="#c8e4f0"/>
+            <stop offset="100%" stop-color="#e8f2f5"/>
+          </linearGradient>
+          <linearGradient id="mountains" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#7090b8"/>
+            <stop offset="100%" stop-color="#5070a0"/>
+          </linearGradient>
+        </defs>
+
+        <!-- ===== Sky ===== -->
+        <rect width="280" height="200" fill="url(#daySky)"/>
+
+        <!-- ===== Clouds ===== -->
+        <g fill="#ffffff" opacity="0.9">
+          <ellipse cx="40" cy="35" rx="18" ry="6"/>
+          <ellipse cx="50" cy="32" rx="12" ry="5"/>
+          <ellipse cx="200" cy="28" rx="20" ry="6"/>
+          <ellipse cx="215" cy="24" rx="13" ry="5"/>
+          <ellipse cx="240" cy="50" rx="15" ry="5"/>
+        </g>
+
+        <!-- ===== Distant mountains ===== -->
+        <g fill="url(#mountains)">
+          <polygon points="0,110 50,55 100,110"/>
+          <polygon points="60,115 110,45 170,115"/>
+          <polygon points="140,112 200,50 260,112"/>
+          <polygon points="220,115 280,60 280,115"/>
+        </g>
+        <!-- Snow caps -->
+        <g fill="#ffffff" opacity="0.85">
+          <polygon points="105,55 110,45 115,55 112,50 108,52"/>
+          <polygon points="195,60 200,50 205,60"/>
+        </g>
+
+        <!-- ===== Pine forest mid-back ===== -->
+        <g fill="#1f4030">
+          <polygon points="0,135 16,88 32,135"/>
+          <polygon points="22,140 38,80 54,140"/>
+          <polygon points="48,135 62,90 76,135"/>
+          <polygon points="200,135 214,88 228,135"/>
+          <polygon points="218,140 234,82 250,140"/>
+          <polygon points="240,135 256,92 272,135"/>
+        </g>
+        <!-- Pines highlights -->
+        <g fill="#2d5e4a" opacity="0.7">
+          <polygon points="22,138 38,90 54,138"/>
+          <polygon points="218,138 234,90 250,138"/>
+        </g>
+
+        <!-- ===== Tiny log cabin tucked at the side ===== -->
+        <g transform="translate(8, 115)">
+          <!-- Smoke from chimney -->
+          <circle cx="22" cy="-2" r="2.5" fill="#ffffff" opacity="0.7"/>
+          <circle cx="25" cy="-7" r="3" fill="#ffffff" opacity="0.6"/>
+          <circle cx="28" cy="-12" r="3.5" fill="#ffffff" opacity="0.5"/>
+          <!-- Chimney -->
+          <rect x="20" y="0" width="5" height="8" fill="#6a4838"/>
+          <!-- Roof -->
+          <polygon points="0,12 18,2 36,12" fill="#6e2818"/>
+          <polygon points="2,11 18,4 34,11" fill="#8a3a28"/>
+          <!-- Walls -->
+          <rect x="3" y="11" width="30" height="14" fill="#8b5a2b"/>
+          <line x1="3" y1="14" x2="33" y2="14" stroke="#5a3a1f" stroke-width="0.5"/>
+          <line x1="3" y1="17" x2="33" y2="17" stroke="#5a3a1f" stroke-width="0.5"/>
+          <line x1="3" y1="20" x2="33" y2="20" stroke="#5a3a1f" stroke-width="0.5"/>
+          <line x1="3" y1="23" x2="33" y2="23" stroke="#5a3a1f" stroke-width="0.5"/>
+          <!-- Door -->
+          <rect x="14" y="16" width="6" height="9" fill="#3a2818"/>
+          <circle cx="18" cy="20.5" r="0.5" fill="#d6a32a"/>
+          <!-- Window -->
+          <rect x="24" y="14" width="5" height="4" fill="#a0d4ea"/>
+          <line x1="26.5" y1="14" x2="26.5" y2="18" stroke="#3a2818" stroke-width="0.3"/>
+          <line x1="24" y1="16" x2="29" y2="16" stroke="#3a2818" stroke-width="0.3"/>
+        </g>
+
+        <!-- ===== Grass/ground ===== -->
+        <rect x="0" y="135" width="280" height="65" fill="#5a8a5a"/>
+        <rect x="0" y="135" width="280" height="8" fill="#6d9d6d"/>
+        <!-- Grass tufts -->
+        <g fill="#3a6b3a">
+          <path d="M 10 140 L 12 136 L 14 140 Z"/>
+          <path d="M 70 142 L 72 138 L 74 142 Z"/>
+          <path d="M 165 141 L 167 137 L 169 141 Z"/>
+          <path d="M 260 142 L 262 138 L 264 142 Z"/>
+        </g>
+
+        <!-- ============ BABE THE BLUE OX (right side) ============ -->
+        <g transform="translate(165, 75)">
+          <!-- Body -->
+          <ellipse cx="40" cy="65" rx="45" ry="22" fill="#8ab8d8"/>
+          <ellipse cx="40" cy="68" rx="42" ry="18" fill="#6a9bc4" opacity="0.6"/>
+          <!-- Belly -->
+          <ellipse cx="40" cy="76" rx="36" ry="9" fill="#b0d0e4" opacity="0.7"/>
+          <!-- Legs (chunky, cartoon) -->
+          <rect x="10" y="78" width="10" height="22" rx="3" fill="#6a9bc4"/>
+          <rect x="26" y="80" width="10" height="20" rx="3" fill="#6a9bc4"/>
+          <rect x="48" y="80" width="10" height="20" rx="3" fill="#6a9bc4"/>
+          <rect x="64" y="78" width="10" height="22" rx="3" fill="#6a9bc4"/>
+          <!-- Hooves -->
+          <ellipse cx="15" cy="100" rx="6" ry="2.5" fill="#3a2818"/>
+          <ellipse cx="31" cy="100" rx="6" ry="2.5" fill="#3a2818"/>
+          <ellipse cx="53" cy="100" rx="6" ry="2.5" fill="#3a2818"/>
+          <ellipse cx="69" cy="100" rx="6" ry="2.5" fill="#3a2818"/>
+          <!-- Tail -->
+          <path d="M 82 55 Q 96 60 94 76 Q 92 80 88 78" stroke="#8ab8d8" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <ellipse cx="90" cy="80" rx="4" ry="5" fill="#1f4030"/>
+          <!-- ===== HEAD ===== -->
+          <ellipse cx="-2" cy="42" rx="24" ry="22" fill="#8ab8d8"/>
+          <!-- Head shading -->
+          <ellipse cx="-4" cy="48" rx="18" ry="13" fill="#b0d0e4" opacity="0.6"/>
+          <!-- Snout (lighter, cartoony) -->
+          <ellipse cx="-14" cy="48" rx="12" ry="9" fill="#b0d0e4"/>
+          <ellipse cx="-14" cy="50" rx="11" ry="7" fill="#c8dfec" opacity="0.7"/>
+          <!-- Nostrils -->
+          <ellipse cx="-18" cy="47" rx="1.6" ry="2" fill="#5a85a8"/>
+          <ellipse cx="-12" cy="49" rx="1.6" ry="2" fill="#5a85a8"/>
+          <!-- Big smile -->
+          <path d="M -22 53 Q -10 60 2 53" stroke="#3a2818" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <!-- Smile corners up -->
+          <path d="M -22 53 Q -23 50 -20 49" stroke="#3a2818" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M 2 53 Q 3 50 0 49" stroke="#3a2818" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <!-- ===== Big cartoon eyes ===== -->
+          <ellipse cx="-8" cy="34" rx="5.5" ry="6" fill="#ffffff"/>
+          <ellipse cx="6" cy="34" rx="5.5" ry="6" fill="#ffffff"/>
+          <circle cx="-7" cy="35" r="3.2" fill="#1a1a1a"/>
+          <circle cx="7" cy="35" r="3.2" fill="#1a1a1a"/>
+          <circle cx="-6" cy="33.5" r="1.2" fill="#ffffff"/>
+          <circle cx="8" cy="33.5" r="1.2" fill="#ffffff"/>
+          <!-- Eyelashes -->
+          <path d="M -12 30 L -13 28 M -10 28 L -11 26 M -8 28 L -8 26" stroke="#1a1a1a" stroke-width="1" stroke-linecap="round"/>
+          <path d="M 11 30 L 12 28 M 9 28 L 10 26 M 7 28 L 7 26" stroke="#1a1a1a" stroke-width="1" stroke-linecap="round"/>
+          <!-- Rosy cheeks -->
+          <ellipse cx="-14" cy="42" rx="3" ry="2" fill="#e8a575" opacity="0.65"/>
+          <ellipse cx="13" cy="42" rx="3" ry="2" fill="#e8a575" opacity="0.65"/>
+          <!-- ===== Golden curved horns ===== -->
+          <path d="M -16 20 Q -26 12 -28 2 Q -28 -2 -24 -1 Q -22 4 -20 12 Q -18 18 -14 22 Z" fill="#d6a32a" stroke="#9a7220" stroke-width="0.8"/>
+          <path d="M 12 20 Q 22 12 24 2 Q 24 -2 20 -1 Q 18 4 16 12 Q 14 18 10 22 Z" fill="#d6a32a" stroke="#9a7220" stroke-width="0.8"/>
+          <!-- Horn highlights -->
+          <path d="M -25 0 Q -22 8 -18 16" stroke="#f0d670" stroke-width="0.8" fill="none"/>
+          <path d="M 21 0 Q 18 8 14 16" stroke="#f0d670" stroke-width="0.8" fill="none"/>
+          <!-- Ears (poking out, perky) -->
+          <ellipse cx="-18" cy="26" rx="4" ry="6" fill="#6a9bc4" transform="rotate(-35 -18 26)"/>
+          <ellipse cx="-18" cy="27" rx="2" ry="4" fill="#b0d0e4" transform="rotate(-35 -18 27)"/>
+          <ellipse cx="14" cy="26" rx="4" ry="6" fill="#6a9bc4" transform="rotate(35 14 26)"/>
+          <ellipse cx="14" cy="27" rx="2" ry="4" fill="#b0d0e4" transform="rotate(35 14 27)"/>
+        </g>
+
+        <!-- ============ PAUL BUNYAN (left, friendly cartoon style) ============ -->
+        <g transform="translate(70, 35)">
+          <!-- ===== Boots (chunky cartoon) ===== -->
+          <ellipse cx="14" cy="148" rx="13" ry="3" fill="#1a1a1a" opacity="0.4"/>
+          <ellipse cx="42" cy="148" rx="13" ry="3" fill="#1a1a1a" opacity="0.4"/>
+          <path d="M 2 130 L 4 146 L 26 146 L 24 130 Z" fill="#5a3a1f"/>
+          <path d="M 30 130 L 32 146 L 54 146 L 52 130 Z" fill="#5a3a1f"/>
+          <!-- Boot shine -->
+          <path d="M 6 132 L 5 142" stroke="#8b5a2b" stroke-width="1.5" opacity="0.6"/>
+          <path d="M 34 132 L 33 142" stroke="#8b5a2b" stroke-width="1.5" opacity="0.6"/>
+          <!-- Boot tops -->
+          <rect x="2" y="124" width="24" height="8" rx="2" fill="#3a2818"/>
+          <rect x="30" y="124" width="24" height="8" rx="2" fill="#3a2818"/>
+
+          <!-- ===== Pants ===== -->
+          <path d="M 0 78 L -2 128 L 28 128 L 30 78 Z" fill="#4a3220"/>
+          <path d="M 30 78 L 32 128 L 58 128 L 60 78 Z" fill="#4a3220"/>
+          <!-- Pant fold highlights -->
+          <line x1="14" y1="82" x2="12" y2="126" stroke="#3a2818" stroke-width="1"/>
+          <line x1="44" y1="82" x2="46" y2="126" stroke="#3a2818" stroke-width="1"/>
+
+          <!-- ===== Belt ===== -->
+          <rect x="-2" y="73" width="62" height="7" fill="#2a1a10"/>
+          <rect x="28" y="73" width="6" height="7" fill="#d6a32a" stroke="#9a7220" stroke-width="0.5"/>
+
+          <!-- ===== Plaid shirt (GREEN like the book) ===== -->
+          <path d="M -8 40 Q -10 28 4 26 L 56 26 Q 70 28 68 40 L 66 78 L -6 78 Z" fill="url(#plaid)" stroke="#0f2a1f" stroke-width="1"/>
+          <!-- Shirt button placket -->
+          <line x1="30" y1="28" x2="30" y2="76" stroke="#1f4030" stroke-width="1.5"/>
+          <circle cx="30" cy="34" r="1.2" fill="#d6a32a"/>
+          <circle cx="30" cy="46" r="1.2" fill="#d6a32a"/>
+          <circle cx="30" cy="58" r="1.2" fill="#d6a32a"/>
+          <circle cx="30" cy="70" r="1.2" fill="#d6a32a"/>
+
+          <!-- ===== Arms ===== -->
+          <!-- Left arm (down at side) -->
+          <path d="M -8 40 L -16 78 L -6 82 L 4 46 Z" fill="url(#plaid)" stroke="#0f2a1f" stroke-width="1"/>
+          <!-- Right arm bent up holding axe over shoulder -->
+          <path d="M 68 40 L 78 30 L 86 38 L 74 50 Z" fill="url(#plaid)" stroke="#0f2a1f" stroke-width="1"/>
+          <!-- Cuff -->
+          <rect x="-14" y="76" width="10" height="4" fill="#1f4030"/>
+
+          <!-- ===== Hands ===== -->
+          <circle cx="-10" cy="84" r="6" fill="#e8a575"/>
+          <circle cx="-10" cy="85" r="5" fill="#d49b6c" opacity="0.4"/>
+          <!-- Right hand on axe -->
+          <circle cx="82" cy="36" r="6" fill="#e8a575"/>
+          <ellipse cx="82" cy="37" rx="5" ry="3" fill="#d49b6c" opacity="0.4"/>
+
+          <!-- ===== Neck ===== -->
+          <rect x="22" y="18" width="14" height="10" fill="#e8a575"/>
+          <ellipse cx="29" cy="27" rx="7" ry="2" fill="#c88a5c" opacity="0.5"/>
+
+          <!-- ===== Head (round, friendly) ===== -->
+          <ellipse cx="29" cy="10" rx="22" ry="22" fill="#e8a575"/>
+          <!-- Face highlight -->
+          <ellipse cx="22" cy="6" rx="10" ry="8" fill="#f4c290" opacity="0.5"/>
+
+          <!-- ===== Big iconic beard ===== -->
+          <path d="M 7 14 Q 4 32 14 38 Q 22 42 29 42 Q 36 42 44 38 Q 54 32 51 14 Q 44 26 29 26 Q 14 26 7 14 Z" fill="#1a1a1a"/>
+          <!-- Beard layer/strands -->
+          <path d="M 13 22 Q 13 34 19 38" stroke="#3a2818" stroke-width="1" fill="none" opacity="0.6"/>
+          <path d="M 45 22 Q 45 34 39 38" stroke="#3a2818" stroke-width="1" fill="none" opacity="0.6"/>
+          <path d="M 22 28 Q 22 38 26 40" stroke="#3a2818" stroke-width="0.8" fill="none" opacity="0.5"/>
+          <path d="M 36 28 Q 36 38 32 40" stroke="#3a2818" stroke-width="0.8" fill="none" opacity="0.5"/>
+
+          <!-- ===== Smile (visible under mustache) ===== -->
+          <path d="M 23 16 Q 29 21 35 16" stroke="#3a2818" stroke-width="1.5" fill="#3a2818" opacity="0"/>
+
+          <!-- ===== Mustache (handlebar) ===== -->
+          <path d="M 16 14 Q 22 18 29 14 Q 36 18 42 14 Q 44 11 41 9 Q 35 11 29 13 Q 23 11 17 9 Q 14 11 16 14 Z" fill="#1a1a1a"/>
+
+          <!-- ===== Big cartoon eyes ===== -->
+          <ellipse cx="22" cy="8" rx="3.2" ry="3.8" fill="#ffffff"/>
+          <ellipse cx="36" cy="8" rx="3.2" ry="3.8" fill="#ffffff"/>
+          <circle cx="22.5" cy="9" r="2" fill="#1a1a1a"/>
+          <circle cx="36.5" cy="9" r="2" fill="#1a1a1a"/>
+          <circle cx="23" cy="8.2" r="0.7" fill="#ffffff"/>
+          <circle cx="37" cy="8.2" r="0.7" fill="#ffffff"/>
+
+          <!-- Eyebrows (friendly arch) -->
+          <path d="M 17 3 Q 22 1 27 3" stroke="#1a1a1a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <path d="M 31 3 Q 36 1 41 3" stroke="#1a1a1a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+          <!-- ===== Nose (button) ===== -->
+          <ellipse cx="29" cy="13" rx="2.5" ry="3" fill="#d49b6c"/>
+          <ellipse cx="29" cy="12" rx="1.5" ry="1" fill="#e8a575"/>
+
+          <!-- ===== Rosy cheeks ===== -->
+          <circle cx="14" cy="18" r="3.5" fill="#e88060" opacity="0.55"/>
+          <circle cx="44" cy="18" r="3.5" fill="#e88060" opacity="0.55"/>
+
+          <!-- ===== Hat (red knit with cream band) ===== -->
+          <path d="M 9 2 Q 9 -12 29 -12 Q 49 -12 49 2 L 49 4 L 9 4 Z" fill="#c83838"/>
+          <!-- Cream band -->
+          <rect x="9" y="2" width="40" height="4" fill="#f4e8d0" stroke="#3a2818" stroke-width="0.3"/>
+          <!-- Hat shading -->
+          <path d="M 9 -2 Q 9 -10 24 -12 L 22 -10 Q 14 -8 14 -2 Z" fill="#8a2828" opacity="0.5"/>
+          <!-- Pompom -->
+          <circle cx="29" cy="-13" r="5" fill="#f4e8d0"/>
+          <circle cx="29" cy="-14" r="3" fill="#ffffff"/>
+          <circle cx="27" cy="-14" r="1" fill="#dac9a0"/>
+
+          <!-- ===== AXE (over shoulder) ===== -->
+          <g transform="translate(78, 30)">
+            <!-- Handle going up over shoulder -->
+            <path d="M 4 8 Q 6 -10 14 -28" stroke="#3a2818" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <path d="M 4 8 Q 6 -10 14 -28" stroke="#8b5a2b" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+            <path d="M 5 4 Q 7 -10 13 -24" stroke="#b88a5a" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <!-- Axe head -->
+            <path d="M 6 -28 L 26 -38 L 30 -28 L 24 -20 L 12 -22 Z" fill="#d8d8d8" stroke="#1a1a1a" stroke-width="1.4"/>
+            <path d="M 6 -28 L 26 -38 L 28 -32 L 12 -22 Z" fill="#f0f0f0"/>
+            <!-- Sharp edge -->
+            <line x1="6" y1="-28" x2="26" y2="-38" stroke="#ffffff" stroke-width="0.8"/>
+            <!-- Rivet on handle -->
+            <circle cx="10" cy="-24" r="1.2" fill="#5a3a1f"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="banner-info">
+      <div>
+        <h1>Paul Bunyan's<br/>Trip Guide 🪓</h1>
+        <div class="sub">A questionably reliable lumberjack chatbot for your Brainerd Lakes vacation</div>
+      </div>
+      <div class="banner-dates">
+        <span>📅</span>
+        <span class="dates">May 23–29, 2026</span>
+        <span class="divider"></span>
+        <span style="opacity:.9">Memorial Day week</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- =================== ROTATING PROMPTS =================== -->
+  <div class="prompts-bar">
+    <div class="label">Suggested<br/>Questions</div>
+    <div class="prompts" id="prompts"></div>
+    <button class="reroll-btn" id="reroll" title="Show different suggestions">🔄 Reroll</button>
+  </div>
+
+  <!-- =================== CHAT =================== -->
+  <section class="chat-wrap">
+    <div class="identity-bar" id="identity-bar" style="display:none">
+      <span class="who-label">Asking as:</span>
+      <span class="who-pill" id="who-pill"></span>
+      <button class="switch-btn" id="switch-user">switch</button>
+    </div>
+    <div class="chips" id="chips">
+      <button class="chip" data-q="What are the best things to do on the lake with kids ages 4, 7, and 9?">🛶 Lakes &amp; Boats</button>
+      <button class="chip wood" data-q="Where should we rent a pontoon for a day on the lake? Best options with reviews.">⛵ Pontoon Rentals</button>
+      <button class="chip red" data-q="What are the best kid-friendly attractions in the Brainerd area for ages 4 to 9?">🎡 Kid Attractions</button>
+      <button class="chip wood" data-q="What are the best family-friendly grill-style restaurants with high-quality food in the Brainerd area? Tell me what reviewers actually say.">🍔 Grill Restaurants</button>
+      <button class="chip" data-q="What are easy hikes or outdoor walks in the Brainerd area that work for a 4 year old?">🥾 Easy Hikes</button>
+      <button class="chip red" data-q="What can we do on a rainy day in Brainerd with young kids?">🌧️ Rainy Day</button>
+      <button class="chip wood" data-q="What special events or things are happening over Memorial Day weekend 2026 in the Brainerd area?">🎆 Memorial Day</button>
+      <button class="chip" data-q="What day trips within an hour of Brainerd are worth doing with the family?">🚗 Day Trips</button>
+      <button class="chip red" data-q="What are good ice cream or dessert spots in the area?">🍦 Sweet Treats</button>
+    </div>
+    <div class="vibe-row" id="vibe-row">
+      <span class="label">Vibe mix:</span>
+      <button class="vibe-pill classic active" data-vibe="classic" title="Old-school, established, Grandpa would approve">🪵 Old Reliable</button>
+      <button class="vibe-pill dive active" data-vibe="dive" title="Looks sketchy, tastes great. Peanut shells on the floor.">🦝 Dive Bar Magic</button>
+      <button class="vibe-pill modern active" data-vibe="modern" title="Newer, polished, slightly Instagrammable">🥑 Shiny &amp; New</button>
+      <span class="vibe-hint">Toggle to shape the picks</span>
+    </div>
+    <div class="messages" id="messages">
+      <div class="msg bot" style="color:#6a5a48;font-style:italic">Loading Paul Bunyan's trip guide…</div>
+    </div>
+  </section>
+
+  <!-- =================== INPUT =================== -->
+  <div class="input-wrap">
+    <input id="input" type="text" placeholder="Ask Paul Bunyan anything…" autocomplete="off" />
+    <button id="send">Send 🪓</button>
+  </div>
+
+  <!-- =================== SIDEBAR =================== -->
+  <aside class="sidebar">
+    <div class="family-card">
+      <div class="who">🪵 Our Lumberjack Crew</div>
+      Grandparents, two couples, daughters age 7 &amp; 9, niece age 4
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="places">📍 Saved Places</button>
+      <button class="tab" data-tab="notes">📌 Notes</button>
+    </div>
+
+    <div class="tab-panel active" id="panel-places">
+      <div id="saved-places-container"></div>
+      <a class="map-all-btn disabled" id="map-all-btn" href="#" target="_blank" rel="noopener">🗺️ View all on Google Maps</a>
+    </div>
+
+    <div class="tab-panel" id="panel-notes">
+      <ul class="notes-list" id="notes-list"></ul>
+      <button class="export-btn" id="export-notes" title="Download saved notes as a Markdown file">⬇ Export Notes to File</button>
+    </div>
+
+    <button class="clear-btn" id="clear-chat">Clear chat history</button>
+    <div class="footer-note">Babe the Blue Ox approves this trip 🐂</div>
+  </aside>
+</div>
+
+<script>
+// ============================================================================
+// CURATED BRAINERD-AREA KNOWLEDGE (with REAL review quotes & sources)
+// Vetted May 2026: closed places (Iven's, Roundhouse, Dunmire's) removed.
+// ============================================================================
+const BRAINERD_DATA = {
+  trip: {
+    dates: "May 23-29, 2026 (Memorial Day week)",
+    travelers: "Grandparents, Chris & wife, brother & wife, daughters age 7 and 9, niece age 4",
+    notes: "Late May: lake water still cool (~55-60°F), boats running, fishing season open, Paul Bunyan Land opens Memorial Day weekend, Nisswa Turtle Races don't start until June."
+  },
+
+  // GRILL-STYLE RESTAURANTS — vetted with real review quotes
+  restaurants_grill: [
+    {
+      name: "Notch 8 Chowhouse & Drinkery",
+      area: "Brainerd (Northern Pacific Center)",
+      tier: "modern",
+      vibe: "Grill-style, elevated burgers, kid-friendly, railroad theme",
+      rating: "4.3★ (382 reviews)",
+      source: "Restaurant Guru / Tripadvisor",
+      note: "Half-pound burgers made of brisket, short rib, and chuck blend. The kids will love the historic railroad-repair-shop setting — it's literally inside an old train roundhouse.",
+      quote: "Diners especially love the burger blend; bacon BBQ burger and sweet potato waffle fries are standouts."
+    },
+    {
+      name: "Ernie's on Gull",
+      area: "East Gull Lake (since 1917)",
+      tier: "classic",
+      vibe: "Lakeside grill, year-round family restaurant",
+      rating: "Strong on Tripadvisor & Yelp",
+      source: "Tripadvisor",
+      note: "🎯 Probably the best fit for your crew. Lakefront deck, swing sets AND a volleyball court for the kids. Burgers, walleye, kids menus with crayons. Staff has a track record with big family groups.",
+      quote: "Accommodated a group of 10 including 4 kids under 4. Kids menus and crayons, served kids' meals first."
+    },
+    {
+      name: "371 Diner",
+      area: "Baxter",
+      tier: "classic",
+      vibe: "50s diner — burgers, malts, breakfast",
+      rating: "4.5★ (3,283 reviews)",
+      source: "Restaurant Guru",
+      note: "Won 2025 Best Breakfast/Brunch, finalist for Best Burger. Half-pound burgers, handcrafted milkshakes. Kids will lose their minds over the 50s look — gleaming chrome diner exterior.",
+      quote: "Fun, family-friendly place to sit down and grab a burger and fries and a frosty."
+    },
+    {
+      name: "Northern Cowboy Flame N' Brew",
+      area: "Brainerd (North Long Lake)",
+      tier: "modern",
+      vibe: "'Modern Northern' grill — replaced Iven's on the Bay",
+      rating: "4.0★ (77 reviews)",
+      source: "Tripadvisor",
+      note: "On the water at the old Iven's location. Cheese curds, walleye cakes, basil chicken sandwich, walleye sandwich, specialty burgers, ribs. Reservations are for parties of 8+ only — call ahead with your group size.",
+      quote: "Warm and friendly atmosphere with a gorgeous view of the lake. Service can be inconsistent — call ahead."
+    },
+    {
+      name: "Main Street Ale House",
+      area: "Downtown Nisswa",
+      tier: "modern",
+      vibe: "Pub-style burgers, creative menu, historic downtown",
+      rating: "4.5★ (816+ reviews)",
+      source: "Google / Tripadvisor",
+      note: "Creative burgers: Brie Burger with blackberry sauce, the Cherry Bomb, and a wild rice & chickpea veg burger that even meat-eaters rave about. Walking distance to Nisswa shops — pair with Sweet Shoppe.",
+      quote: "Brie burger with blackberry sauce was delicious. Wild rice burger — vegetarian and so flavorful!"
+    },
+    {
+      name: "Big Axe Brewing Co.",
+      area: "Main St, Nisswa",
+      tier: "dive",
+      vibe: "Brewery + kitchen, family + dog friendly",
+      rating: "3.9★ (#9 of 27 in Nisswa)",
+      source: "Tripadvisor / Yelp",
+      note: "🪓 Name fits the theme. Soups, salads, burgers, sandwiches, plus walleye, BBQ wings, brisket, chicken. Cuban wrap gets specifically called out by reviewers.",
+      quote: "Great beer, great service, cool atmosphere. The Cuban wrap is delicious."
+    },
+    {
+      name: "Prairie Bay Grill",
+      area: "Baxter",
+      tier: "modern",
+      vibe: "Wood-fired pizza + grill, locally sourced, slightly upscale",
+      rating: "Mixed recent reviews — strong food when dining in",
+      source: "Yelp / Heavy Table",
+      note: "Wood-fired pizzas are the headliner. Sandwiches & salads in the $9-$15 range — affordable enough for the kids. Recent takeout reviews have been spotty; recommended for dine-in.",
+      quote: "About three-quarters of ingredients sourced locally. The German Uber-Za pizza — kraut, sausage, pretzels, whole-grain mustard — is a thing."
+    },
+    {
+      name: "Ganley's Family Restaurant",
+      area: "Main St, Nisswa",
+      tier: "classic",
+      vibe: "Family diner, burgers, malts, ice cream",
+      rating: "Solid local favorite, kid-friendly",
+      source: "Tripadvisor / Local",
+      note: "Old-school Nisswa diner on the corner of Main & 371. Burgers, sandwiches, ice cream floats, malts. Caramel rolls get raves at breakfast.",
+      quote: "Generous portions, flavorful dishes. Warm, family-run ambiance. Particular enthusiasm for the caramel rolls."
+    },
+    {
+      name: "The Quarterdeck Grill",
+      area: "Quarterdeck Resort, Gull Lake (Nisswa)",
+      tier: "classic",
+      vibe: "Lakefront, live music, casual",
+      rating: "4.0★ — view is the draw",
+      source: "Tripadvisor",
+      note: "Best Gull Lake view of any restaurant. Live music in season. Burgers and walleye are 'fine but priced high' — go for the view and the music, not for a deal.",
+      quote: "Burger and walleye sandwich we had were fine — priced high — but fine. The view is the redeeming quality."
+    },
+    {
+      name: "Zorbaz on Gull Lake",
+      area: "Nisswa",
+      tier: "classic",
+      vibe: "Lakefront pizza shack, super casual",
+      rating: "Iconic local",
+      source: "Local favorite / Tripadvisor",
+      note: "Pizza and lake views. Super casual — bring kids in swimsuits straight from the boat. The Zorbaz pizza is a Brainerd-area institution. Cheap, quick, easy."
+    },
+    {
+      name: "Rafferty's Pizza",
+      area: "Brainerd, Nisswa, Crosslake locations",
+      tier: "classic",
+      vibe: "Family pizza joint — local favorite since 1981",
+      rating: "#1 restaurant in Nisswa (Tripadvisor)",
+      source: "Tripadvisor / Restaurantji",
+      note: "🎯 If pizza fits the night, this is it. Dough and sauce made daily. Multiple locations. Indoor and outdoor seating.",
+      quote: "It is our absolute favorite pizza in the world — families come back annually just for this."
+    },
+    {
+      name: "The Local 218",
+      area: "Brainerd (a few blocks off main drag)",
+      tier: "dive",
+      vibe: "American bistro, hidden gem locals keep quiet about",
+      rating: "Strong on Tripadvisor & Yelp",
+      source: "Yelp / Tripadvisor",
+      note: "Maytag Burger and dry rub chicken wings are the signature items. Laid-back yet softly lit — works for parents who want one nicer evening.",
+      quote: "Locals may not tell you it exists, if only to keep it to themselves. Make sure to order the dry rub wings."
+    },
+    {
+      name: "Norway Ridge Supper Club",
+      area: "Pequot Lakes (rural — 25 min north)",
+      tier: "classic",
+      vibe: "Classic Up North supper club, in business since 1948",
+      rating: "Tripadvisor favorite — hidden gem",
+      source: "Tripadvisor / OnlyInYourState",
+      note: "🎯 The most authentic supper-club experience in the area. Log cabin setting, lake views, ribs and walleye are standouts. Can get LOUD on weekends — go Tuesday/Wednesday with the crew.",
+      quote: "Walleye among the best they've ever had. Cozy and homey — like dining at a favorite aunt's house. Drinks add up."
+    },
+    {
+      name: "Bar Harbor Supper Club",
+      area: "Lake Shore (Gull Lake) — since 1937",
+      tier: "classic",
+      vibe: "Classic Gull Lake supper club",
+      rating: "Mixed (great views, food inconsistent lately)",
+      source: "Tripadvisor / Yelp",
+      note: "Beautiful lakeside setting. Certified Angus beef, seafood, lobster. Reviewers RAVE about the chicken dinners and cocktails; some recent food reviews are mixed. Book early for sunset.",
+      quote: "Amazing chicken dinners and perfect cocktails. Best Restaurant on Gull Lake — for the view alone."
+    },
+    {
+      name: "The Skillet Restaurant",
+      area: "Brainerd",
+      tier: "dive",
+      vibe: "Breakfast diner — biscuits & gravy destination",
+      rating: "Local breakfast favorite",
+      source: "Hidden gems lists",
+      note: "Classic early-morning spot. The biscuits & gravy are legendary locally — pair with the drive up if you arrive hungry.",
+      quote: "A dish so heavenly that locals and travelers alike claim it's the best for miles."
+    },
+    {
+      name: "Last Turn Saloon & Eatery",
+      area: "Downtown Brainerd",
+      tier: "dive",
+      vibe: "Historic Brainerd saloon — peanut shells on the floor",
+      rating: "4.4★ on Restaurant Guru (513 reviews)",
+      source: "Tripadvisor / Restaurant Guru",
+      note: "🪓 Pure divebar character — the backbar was transplanted from the Pillsbury mansion. Free peanuts and popcorn, shells get chucked on the floor. The Ninja burger comes topped with two egg-rolls. Recently rebranded as Last Turn Brew Pub.",
+      quote: "Burgers were huge, beer was good, and the ham and cheese sandwich on marble rye was awesome. The Ninja burger is a must-try."
+    },
+    {
+      name: "The Bridge Tavern",
+      area: "Crosby (30 min east — crossroads of MN-6 and CR-11)",
+      tier: "dive",
+      vibe: "Roadside tavern, juicy burgers, surprisingly great prime rib",
+      rating: "Strong reviews across Tripadvisor & Yelp",
+      source: "Tripadvisor / Restaurantji",
+      note: "Pair with a Cuyuna day. New owners revamped the menu — Bridge burger comes with homemade chips, hangover burger is the signature, BBQ ribs and prime rib both 'top notch'.",
+      quote: "Burger is A++ for flavor and juicy, not dry and flavorless. Bridge burger comes with homemade chips and is fresh not frozen."
+    }
+  ],
+
+  // CLOSED — DO NOT RECOMMEND (kept here so the bot knows to avoid)
+  restaurants_closed: [
+    { name: "Iven's on the Bay", note: "CLOSED — replaced by Northern Cowboy Flame N' Brew at the same location." },
+    { name: "Roundhouse Brewery (Nisswa)", note: "CLOSED to the public January 1, 2026." },
+    { name: "Dunmire's on the Lakes", note: "CLOSED indefinitely after December 2025 flood damage from a fire-suppression-system malfunction." }
+  ],
+
+  lakes_and_outdoor: [
+    { name: "Gull Lake", area: "Nisswa / East Gull Lake", note: "The main hub — 9,400 acres. Pontoon rentals at Cragun's, Madden's, or Bar Harbor. Multiple public beaches and accesses." },
+    { name: "Crow Wing State Park", area: "Brainerd (10 min south)", note: "Easy flat trails, historic townsite, beach at the Crow Wing/Mississippi junction. Great for the 4-year-old." },
+    { name: "Mille Lacs Kathio State Park", area: "30 min east", note: "Observation tower with epic views, swimming beach, easy interpretive trails. Quieter than Crow Wing." },
+    { name: "Paul Bunyan State Trail", area: "Starts in Baxter", note: "120-mile paved trail. Rent bikes for a short out-and-back. Strollers and training wheels work fine." },
+    { name: "Cuyuna Lakes Mountain Bike Trails", area: "Crosby, 30 min east", note: "World-class mountain biking on reclaimed mine pits. Has beginner-friendly loops the older girls might enjoy. Clearest blue water in MN." },
+    { name: "Pillsbury State Forest", area: "20 min west", note: "Quiet trails, picnicking. Less crowded than the state parks." },
+    { name: "Northland Arboretum", area: "Brainerd", note: "12 miles of easy trails through prairie and pines. Stroller-friendly for grandparents." },
+    { name: "Pelican Lake Beach", area: "Breezy Point area", note: "🎯 Best beach for the 4-year-old — very shallow, sandy, picnic tables. One of the few public beaches in the area." },
+    { name: "Lum Park / Rice Lake", area: "Brainerd", note: "Swimming beach, shelters, playground, fishing dock. Family-friendly, easy access." },
+    { name: "Pillager Lake Park", area: "Pillager (20 min west)", note: "Clean sandy beach with a small slide INTO the water — the 7 and 9 year olds will love this. Plus picnic and playground." },
+    { name: "Crosby Memorial Park", area: "Crosby (30 min east)", note: "On Serpent Lake. Big wooden playset, swimming beach. Combine with Cuyuna." }
+  ],
+
+  pontoon_rentals: [
+    { name: "Lake Fun Rentals", area: "Gull Lake (delivers to 20+ lakes)", note: "🎯 Best reviewed in the area. Family-owned. They DELIVER pontoons to other lakes so you don't have to tow a trailer.", quote: "Returning customers report the best customer service in the Brainerd area." },
+    { name: "Nisswa Boat and Jet Ski Rentals", area: "Nisswa", note: "Strong family reviews — they'll even refill the gas tank for you. Beautiful, well-maintained boats." },
+    { name: "Brainerd Lakes Best Rentals", area: "Brainerd", note: "Solid third option — accommodating staff, good fleet." }
+  ],
+
+  kid_attractions: [
+    { name: "Paul Bunyan Land + This Old Farm", area: "Brainerd (east side)", note: "🎯 PERFECT for ages 4-9. The 26-foot talking Paul Bunyan greets each kid BY NAME — whisper names to attendant. 40+ rides, petting zoo, antique tractors. ~$20/person ($17 seniors). OPENS Memorial Day weekend — perfect timing. Reviews note it's dated but the kids don't care.", quote: "Magical when Paul talks to the kids — that alone makes the visit worthwhile. Best for kids 10 and under." },
+    { name: "Pirate's Cove Adventure Golf", area: "Lake Shore (Gull Lake)", note: "Voted #1 Mini Golf in 2023 Best of Brainerd Lakes. Two pirate-themed 18-hole courses (one easier, one harder) plus go-karts. ~$13.50 for golf + go-kart combo. Pirate motif is fun, not scary for the 4 year old.", quote: "The whole family had a blast. Super clean, very well kept." },
+    { name: "Nisswa Family Fun Center", area: "Nisswa", note: "Go-karts, bumper boats, mini golf, batting cages, plus water park with a 'Paul Bunyan sized wading pool' for the little kids. Best for an afternoon energy burn." },
+    { name: "Safari North Wildlife Park", area: "Brainerd", note: "Hands-on animal park — tortoises, camels, llamas, parakeets. The 4-year-old will love feeding things. Less famous than Paul Bunyan Land but a good half-day." },
+    { name: "Cuyuna Lakes Mountain Bike Trails", area: "Crosby (30 min east)", note: "Silver-level IMBA Ride Center. Beginner trails Dragline and Easy Street are kid-friendly. Pump track and skills parks for the older girls. The 4-year-old can ride pavement near the trailheads. Bike rentals on site.", quote: "Virtually all the trails are kid-friendly with limited climbing. Wider, flatter trails for novices, plus pump track and skills parks." },
+    { name: "Pequot Lakes Giant Bobber Water Tower", area: "Pequot Lakes", note: "Quick photo stop — the town water tower is painted as a red-and-white fishing bobber. 5 minutes, classic Brainerd photo." },
+    { name: "Mount Ski Gull Summer Fun", area: "East Gull Lake", note: "Alpine slide, mini golf, climbing wall. Some years they don't open until early June — call to confirm Memorial Day hours." },
+    { name: "Croft Mine Historical Park", area: "Crosby", note: "Short visit. Pair with Cuyuna for a half-day east-side trip." }
+  ],
+
+  food_sweet: [
+    { name: "Nisswa Sweet Shoppe", area: "Downtown Nisswa", note: "Old-fashioned candy, fudge, ice cream. Required stop." },
+    { name: "Schaefer's Foods Deli", area: "Nisswa", note: "Locally famous deli — sandwiches for cabin lunches or quick eats." },
+    { name: "Ganley's malts & floats", area: "Nisswa", note: "Diner ice cream done right." },
+    { name: "371 Diner milkshakes", area: "Baxter", note: "Handcrafted, ranked among the area's best." }
+  ],
+
+  day_trips: [
+    { name: "Garrison & Mille Lacs Lake", area: "30 min east", note: "Drive up for the giant walleye statue, pelicans on Mille Lacs, lunch at Black Bear Lodge & Saloon. Big-water views." },
+    { name: "Itasca State Park (Mississippi Headwaters)", area: "1.5 hrs north", note: "Walk across the Mississippi at its source. Bucket-list MN stop. Long day for the 4-year-old but doable." },
+    { name: "Walker / Leech Lake", area: "45 min north", note: "Cute small-town feel, beach, ice cream, mini golf." },
+    { name: "Park Rapids", area: "1 hr north", note: "MinneSoda Fountain in town. Charming downtown. Often paired with Itasca." },
+    { name: "Crosby & Cuyuna Lakes", area: "30 min east", note: "Mining museum, biking, the clearest swimming water in MN." }
+  ],
+
+  rainy_day: [
+    { name: "Crystal Bay Lanes", area: "Brainerd", note: "Bowling — easy win with three young kids." },
+    { name: "Brainerd Public Library", area: "Brainerd", note: "Nice kids area, free, good for a 1-hr decompress." },
+    { name: "Lakes 12 Theater", area: "Baxter", note: "Modern theater. Check showtimes — kids movies usually mid-morning and afternoon." },
+    { name: "Croft Mine Historical Park", area: "Crosby", note: "Indoor history exhibits as a rain backup." },
+    { name: "Nisswa downtown shops", area: "Nisswa", note: "Covered walking, candy, fudge, gift shops. Sweet Shoppe is the centerpiece." }
+  ],
+
+  memorial_day: [
+    "Crosslake Memorial Day Parade — typically Monday morning. Check Crosslake Chamber for 2026 exact time.",
+    "Brainerd Memorial Day services at Evergreen Cemetery.",
+    "Paul Bunyan Land OPENS Memorial Day weekend (Saturday May 23, 2026).",
+    "Most resorts run weekend kickoff events — call your lodging.",
+    "Pelican Lake / Breezy Point fishing tournaments are common this weekend.",
+    "Mille Lacs walleye is in full swing — fishing opener was May 9."
+  ],
+
+  practical: {
+    weather: "Late May avg highs 65-72°F, lows 45-50°F. Pack layers. Lake water is cold — kids will get in for 30 seconds then want a towel.",
+    bugs: "Mosquitoes start around Memorial Day. Bring repellent.",
+    crowds: "Memorial Day weekend (Sat-Mon) is the season opener — resorts and restaurants will be busier. Tuesday-Thursday quieter.",
+    grocery: "Schaefer's in Nisswa, Cub Foods in Baxter, Super One in Brainerd.",
+    pharmacy_humor: "If you need bug spray, sunscreen, or any other 'embarrassing emergency item' (looking at you, Uncle Bob), Walgreens and CVS in Baxter are 24/7-ish."
+  }
+};
+
+// ============================================================================
+// SUGGESTED PROMPTS — rotating, occasional Paul-Bunyan-sized humor
+// ============================================================================
+const REAL_PROMPTS = [
+  "What's the best burger lakeside?",
+  "Where can we rent a pontoon for a day?",
+  "Easiest hike for a 4 year old?",
+  "Best place for breakfast before driving up?",
+  "Where do locals actually eat?",
+  "What's open Memorial Day Monday?",
+  "Family activities for a 50°F morning?",
+  "Where's the best ice cream in the area?",
+  "Itinerary for a rainy day with three kids?",
+  "Sunset dinner spot the grandparents will love?",
+  "Where can we walk and shop in one block?",
+  "Best beach for little kids?",
+  "Walleye dinner that's not stuffy?",
+  "Place to dock a pontoon and grab lunch?",
+  "Cheap eats for a big group?",
+  "Romantic dinner without the kids?",
+  "Where to fish from shore with kids?",
+  "Mini golf rankings — who actually wins?",
+  "How early do we need to reserve restaurants?",
+  "What should we pack for late May weather?"
+];
+
+const FUNNY_PROMPTS = [
+  "Which gas station has the best selection of bug spray AND hemorrhoid cream at 11pm?",
+  "What's Paul Bunyan's favorite breakfast spot?",
+  "If I lose a kid at Paul Bunyan Land, where do I find them first?",
+  "What restaurant has portions big enough for a lumberjack?",
+  "Most dramatic way to fall off a pontoon?",
+  "Where can I buy a 'My family went to Brainerd and all I got was sunburned' t-shirt?",
+  "Which lake has the friendliest loon?",
+  "Restaurant with the most taxidermy on the walls?",
+  "Where would Babe the Blue Ox eat lunch?",
+  "What if Grandpa wants to wear his Crocs to a supper club?",
+  "Where do I confess to the kids that we forgot the marshmallows?",
+  "Closest place to buy a fishing pole at 6am after we forgot ours?",
+  "If a mosquito carries off the 4-year-old, where do we file a report?",
+  "What's the local cure for too much walleye?",
+  "Where can I get a beer big enough that nobody asks me to drive the boat?",
+  "Best place to hide from the in-laws for an afternoon?",
+  "Restaurant where 'casual' includes wet swim trunks?",
+  "Where can I rent a personality for the four year old's bedtime?",
+  "What's the over/under on how many times we'll hear 'are we there yet'?",
+  "Which lake is best for losing exactly one flip flop?",
+  "Where do dads go when 'I need to go to the hardware store' is the truth?",
+  "Restaurant most likely to have a guy named Larry who knows my dad?",
+  "What's the polite way to ask the loons to keep it down at 5am?",
+  "Where do I take a picture so it looks like we did more than we did?"
+];
+
+function pickPrompts() {
+  // 4 real + 1 funny, shuffled
+  const shuffleReal = [...REAL_PROMPTS].sort(() => Math.random() - 0.5).slice(0, 4);
+  const funny = FUNNY_PROMPTS[Math.floor(Math.random() * FUNNY_PROMPTS.length)];
+  const all = [...shuffleReal.map(p => ({text: p, funny: false})), {text: funny, funny: true}];
+  return all.sort(() => Math.random() - 0.5);
+}
+
+function renderPrompts() {
+  const container = document.getElementById("prompts");
+  container.innerHTML = "";
+  for (const p of pickPrompts()) {
+    const btn = document.createElement("button");
+    btn.className = "prompt-pill" + (p.funny ? " funny" : "");
+    btn.textContent = p.text;
+    btn.onclick = () => askBot(p.text);
+    container.appendChild(btn);
+  }
+}
+
+document.getElementById("reroll").addEventListener("click", renderPrompts);
+
+// ============================================================================
+// CHAT STATE
+// ============================================================================
+const STORAGE_KEYS = {
+  HISTORY: "brainerd_chat_history_v4",
+  FAVORITES: "brainerd_favorites_v3", // bumped: new shape with category
+  NOTES: "brainerd_saved_notes_v1",
+  VIBES: "brainerd_vibes_v1",
+  USER: "brainerd_current_user_v1"
+};
+
+const USERS = [
+  { id: "papa",    name: "Papa",    type: "adult", emoji: "👴" },
+  { id: "mimi",    name: "Mimi",    type: "adult", emoji: "👵" },
+  { id: "dan",     name: "Dan",     type: "adult", emoji: "🧔" },
+  { id: "julie",   name: "Julie",   type: "adult", emoji: "👩" },
+  { id: "chris",   name: "Chris",   type: "adult", emoji: "👨" },
+  { id: "rachael", name: "Rachael", type: "adult", emoji: "👩‍🦰" },
+  { id: "olivia",  name: "Olivia",  type: "kid",   emoji: "👧" },
+  { id: "abby",    name: "Abby",    type: "kid",   emoji: "🧒" },
+  { id: "mae",     name: "Mae",     type: "kid",   emoji: "👶" }
+];
+function getUser(id) { return USERS.find(u => u.id === id) || null; }
+const ALL_VIBES = ["classic", "dive", "modern"];
+const VIBE_LABELS = {
+  classic: "Old Reliable (tried-and-true, established — Grandpa approves)",
+  dive: "Dive Bar Magic (looks rough, food's great, peanut-shells-on-floor energy)",
+  modern: "Shiny & New (current, polished, slightly Instagrammable)"
+};
+
+// Defensive localStorage — falls back to in-memory if blocked
+const memStore = {};
+function safeGet(key) {
+  try { return localStorage.getItem(key); }
+  catch (e) { return memStore[key] || null; }
+}
+function safeSet(key, val) {
+  try { localStorage.setItem(key, val); }
+  catch (e) { memStore[key] = val; }
+}
+
+let history = [];
+let favorites = [];
+let savedNotes = [];
+try { history = JSON.parse(safeGet(STORAGE_KEYS.HISTORY) || "[]"); } catch (e) { history = []; }
+try { favorites = JSON.parse(safeGet(STORAGE_KEYS.FAVORITES) || "[]"); } catch (e) { favorites = []; }
+try { savedNotes = JSON.parse(safeGet(STORAGE_KEYS.NOTES) || "[]"); } catch (e) { savedNotes = []; }
+// Migrate old v2 favorites (no category) if present
+try {
+  if (favorites.length === 0) {
+    const oldFavs = JSON.parse(safeGet("brainerd_favorites_v2") || "[]");
+    if (oldFavs.length > 0) {
+      favorites = oldFavs.map(f => ({ ...f, category: "other" }));
+      safeSet(STORAGE_KEYS.FAVORITES, JSON.stringify(favorites));
+    }
+  }
+} catch (e) { /* ignore */ }
+// Re-categorize any favorites that are missing a category (e.g. from earlier sessions)
+favorites = favorites.map(f => {
+  if (!f.category || f.category === "other") {
+    const p = findPlace(f.name);
+    return { ...f, category: p.category || "other" };
+  }
+  return f;
+});
+let selectedVibes = [];
+try { selectedVibes = JSON.parse(safeGet(STORAGE_KEYS.VIBES) || JSON.stringify(ALL_VIBES)); } catch (e) { selectedVibes = [...ALL_VIBES]; }
+if (!Array.isArray(selectedVibes) || selectedVibes.length === 0) selectedVibes = [...ALL_VIBES];
+
+let currentUserId = safeGet(STORAGE_KEYS.USER) || null;
+
+const messagesEl = document.getElementById("messages");
+const inputEl = document.getElementById("input");
+const sendBtn = document.getElementById("send");
+const savedPlacesEl = document.getElementById("saved-places-container");
+const mapAllBtn = document.getElementById("map-all-btn");
+const notesListEl = document.getElementById("notes-list");
+const exportBtn = document.getElementById("export-notes");
+
+// =============== PLACE LOOKUP + CATEGORIZATION ===============
+// Map data array -> human category label + emoji
+const CATEGORY_META = {
+  restaurants_grill:   { label: "Eats & Drinks",      icon: "🍽️" },
+  pontoon_rentals:     { label: "On the Water",       icon: "⛵" },
+  lakes_and_outdoor:   { label: "Lakes & Outdoors",   icon: "🛶" },
+  kid_attractions:     { label: "Kid Stuff",          icon: "🎡" },
+  food_sweet:          { label: "Sweet Treats",       icon: "🍦" },
+  day_trips:           { label: "Day Trips",          icon: "🚗" },
+  rainy_day:           { label: "Rainy Day",          icon: "🌧️" }
+};
+const CATEGORY_ORDER = ["restaurants_grill","kid_attractions","lakes_and_outdoor","pontoon_rentals","food_sweet","day_trips","rainy_day"];
+
+function findPlace(name) {
+  const lname = name.toLowerCase();
+  for (const cat of Object.keys(CATEGORY_META)) {
+    const arr = BRAINERD_DATA[cat] || [];
+    for (const p of arr) {
+      if (p.name.toLowerCase() === lname) return { ...p, category: cat };
+      // partial match — handles renamed places like "Iven's" reference
+      if (p.name.toLowerCase().includes(lname) || lname.includes(p.name.toLowerCase().split(" ")[0].toLowerCase())) {
+        // Only match if the first significant word matches to avoid false positives
+        if (p.name.toLowerCase().split(/\s+/)[0] === lname.split(/\s+/)[0]) {
+          return { ...p, category: cat };
+        }
+      }
+    }
+  }
+  return { name: name, category: "other", area: "Brainerd area" };
+}
+
+function mapsUrlForPlace(name) {
+  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(name + " Brainerd MN");
+}
+
+function mapsUrlForAll() {
+  if (favorites.length === 0) return "#";
+  // Google Maps directions URL — shows all places on one map with a route between them
+  const stops = favorites.map(f => encodeURIComponent(f.name + " Brainerd MN")).join("/");
+  return "https://www.google.com/maps/dir/" + stops;
+}
+
+// ============================================================================
+// RENDER HELPERS
+// ============================================================================
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
+function renderBotText(text) {
+  let html = escapeHtml(text);
+  html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  // Quote blocks: lines starting with >
+  html = html.replace(/^&gt; (.+)$/gm, '<div class="quote">$1</div>');
+  // Bracketed place names -> chips with star
+  html = html.replace(/\[([^\]]+)\]/g, (m, name) => {
+    const isStarred = favorites.some(f => f.name.toLowerCase() === name.toLowerCase());
+    const starClass = isStarred ? "star-btn starred" : "star-btn";
+    const starChar = isStarred ? "★" : "☆";
+    return `<span class="place">${escapeHtml(name)}<button class="${starClass}" data-name="${escapeHtml(name)}" title="Save to favorites">${starChar}</button></span>`;
+  });
+  // Bullets & headings
+  const lines = html.split("\n");
+  let out = [];
+  let inList = false;
+  for (const line of lines) {
+    if (/^- /.test(line)) {
+      if (!inList) { out.push("<ul>"); inList = true; }
+      out.push("<li>" + line.replace(/^- /, "") + "</li>");
+    } else if (/^### /.test(line)) {
+      if (inList) { out.push("</ul>"); inList = false; }
+      out.push("<h3>" + line.replace(/^### /, "") + "</h3>");
+    } else {
+      if (inList) { out.push("</ul>"); inList = false; }
+      if (line.trim()) out.push("<div>" + line + "</div>");
+    }
+  }
+  if (inList) out.push("</ul>");
+  return out.join("");
+}
+
+function findPrecedingQuestion(botIndex) {
+  for (let i = botIndex - 1; i >= 0; i--) {
+    if (history[i].role === "user") return history[i].text;
+  }
+  return "(no preceding question)";
+}
+
+// ============== USER PICKER + IDENTITY ==============
+function renderIdentityBar() {
+  const bar = document.getElementById("identity-bar");
+  const user = currentUserId ? getUser(currentUserId) : null;
+  if (user) {
+    bar.style.display = "flex";
+    document.getElementById("who-pill").innerHTML = user.emoji + " " + user.name;
+  } else {
+    bar.style.display = "none";
+  }
+}
+
+function buildUserPickerHTML() {
+  const adults = USERS.filter(u => u.type === "adult");
+  const kids = USERS.filter(u => u.type === "kid");
+  const renderRow = (arr) => arr.map(u =>
+    `<button class="user-btn" data-user-id="${u.id}">
+      <span class="user-emoji">${u.emoji}</span>
+      <span class="user-name">${u.name}</span>
+    </button>`
+  ).join("");
+  return `
+    <div class="user-picker">
+      <h3>🪓 Hold up — who's asking?</h3>
+      <div class="picker-sub">I respond a little differently depending on whether you're an adult who can take a joke or a kid who'd rather hear a tall tale. Pick yourself:</div>
+      <div class="group-label">Grown-ups</div>
+      <div class="user-grid">${renderRow(adults)}</div>
+      <div class="group-label">Kids</div>
+      <div class="user-grid">${renderRow(kids)}</div>
+    </div>
+  `;
+}
+
+function setUser(userId) {
+  currentUserId = userId;
+  safeSet(STORAGE_KEYS.USER, userId);
+  renderIdentityBar();
+  renderMessages();
+}
+
+document.getElementById("switch-user").addEventListener("click", () => {
+  currentUserId = null;
+  safeSet(STORAGE_KEYS.USER, "");
+  history = []; // clear chat when switching so the new user gets a fresh welcome
+  safeSet(STORAGE_KEYS.HISTORY, JSON.stringify(history));
+  renderIdentityBar();
+  renderMessages();
+});
+
+function renderMessages() {
+  messagesEl.innerHTML = "";
+  // No user selected yet — show the picker
+  if (!currentUserId) {
+    const picker = document.createElement("div");
+    picker.innerHTML = buildUserPickerHTML();
+    messagesEl.appendChild(picker);
+    return;
+  }
+  if (history.length === 0) {
+    const user = getUser(currentUserId);
+    const welcome = document.createElement("div");
+    welcome.className = "msg bot";
+    let welcomeText;
+    if (user && user.type === "kid") {
+      welcomeText =
+        `**Hey ${user.name}!** 🪓 I'm Paul Bunyan!\n\n` +
+        `I'm the biggest lumberjack who ever lived — so big my footprints made the lakes of Minnesota. (No really, that's what people say!) My buddy Babe the Blue Ox is here too. She's friendly. Mostly.\n\n` +
+        `I know LOTS about the Brainerd Lakes — the best place to find a real giant Paul Bunyan statue, where the best ice cream is, and which lake has the most pelicans (it's Mille Lacs — they have hundreds!).\n\n` +
+        `Try asking me anything! Like:\n` +
+        `- *What's the most fun place for kids?*\n` +
+        `- *Tell me a Paul Bunyan story!*\n` +
+        `- *Where can I see a really BIG fish statue?*\n\n` +
+        `Tap a ⭐ next to any place to save it, so we don't forget!`;
+    } else if (user) {
+      welcomeText =
+        `**${user.name}.** Welcome. Try to keep up.\n\n` +
+        `I'm Paul Bunyan, allegedly the largest lumberjack in folk-history and now somehow a trip chatbot. I know the Brainerd Lakes — what's open in May 2026, what reviewers actually say, and where to send the grandparents while you sneak off for a beer.\n\n` +
+        `Quick rules: vibe pills up top shape my restaurant picks (🪵 Old Reliable / 🦝 Dive Bar Magic / 🥑 Shiny & New). Star a place to save it. Pin an answer to keep it. Don't ask me what 'fun' means — figure that out yourself.\n\n` +
+        `Some sample questions for the adults:\n` +
+        `- *Best dive bar with great food on a Tuesday?*\n` +
+        `- *Where do I hide from the in-laws for an afternoon?*\n` +
+        `- *Pick one classic and one modern for two dinners.*`;
+    } else {
+      welcomeText = "Pick a person first, friend. Up there ☝️";
+    }
+    welcome.innerHTML = renderBotText(welcomeText);
+    messagesEl.appendChild(welcome);
+    return;
+  }
+  history.forEach((m, idx) => {
+    const div = document.createElement("div");
+    div.className = "msg " + m.role;
+    const msgDomId = "msg-dom-" + idx;
+    div.id = msgDomId;
+    if (m.role === "bot") {
+      const msgId = m.id || ("msg-" + idx);
+      const isSaved = savedNotes.some(n => n.id === msgId);
+      div.innerHTML = renderBotText(m.text) +
+        `<div class="msg-actions">
+          <button class="save-msg-btn${isSaved ? " saved" : ""}" data-msg-id="${msgId}" data-msg-idx="${idx}">
+            ${isSaved ? "✓ Saved" : "📌 Save this"}
+          </button>
+        </div>`;
+    } else {
+      div.textContent = m.text;
+    }
+    messagesEl.appendChild(div);
+  });
+  // No auto-scroll — explicit scrolling is handled by askBot for the right moments
+}
+
+// Scroll the top of a message into view at the top of the messages pane
+function scrollMessageToTop(idx) {
+  const el = document.getElementById("msg-dom-" + idx);
+  if (!el) return;
+  // Use scrollIntoView with block:start so reading starts at the top of the response
+  try {
+    el.scrollIntoView({ block: "start", behavior: "smooth" });
+  } catch (e) {
+    // Fallback for older browsers
+    messagesEl.scrollTop = el.offsetTop - messagesEl.offsetTop;
+  }
+}
+
+function toggleSaveNote(msgId, msgIdx) {
+  const existing = savedNotes.findIndex(n => n.id === msgId);
+  if (existing >= 0) {
+    savedNotes.splice(existing, 1);
+  } else {
+    const botMsg = history[msgIdx];
+    if (!botMsg || botMsg.role !== "bot") return;
+    const question = findPrecedingQuestion(msgIdx);
+    savedNotes.push({
+      id: msgId,
+      question: question,
+      answer: botMsg.text,
+      savedAt: new Date().toISOString()
+    });
+  }
+  safeSet(STORAGE_KEYS.NOTES, JSON.stringify(savedNotes));
+  renderMessages();
+  renderSavedNotes();
+}
+
+function renderSavedNotes() {
+  notesListEl.innerHTML = "";
+  if (savedNotes.length === 0) {
+    const li = document.createElement("li");
+    li.className = "empty";
+    li.style.border = "none";
+    li.style.background = "transparent";
+    li.textContent = "Tap 📌 Save on any answer to pin it here.";
+    notesListEl.appendChild(li);
+    exportBtn.disabled = true;
+    return;
+  }
+  exportBtn.disabled = false;
+  // Most recent first
+  const sorted = [...savedNotes].sort((a, b) => (b.savedAt || "").localeCompare(a.savedAt || ""));
+  for (const note of sorted) {
+    // Strip markdown for sidebar preview
+    const previewText = note.answer
+      .replace(/\*\*(.+?)\*\*/g, "$1")
+      .replace(/^### /gm, "")
+      .replace(/^- /gm, "• ")
+      .replace(/^&gt; /gm, "")
+      .replace(/^> /gm, "")
+      .replace(/\[([^\]]+)\]/g, "$1");
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <div class="note-q">Q: ${escapeHtml(note.question)}</div>
+      <div class="note-a">${escapeHtml(previewText)}</div>
+      <div class="note-actions">
+        <span>${new Date(note.savedAt).toLocaleDateString()}</span>
+        <button data-note-id="${escapeHtml(note.id)}" title="Remove">Remove</button>
+      </div>
+    `;
+    notesListEl.appendChild(li);
+  }
+}
+
+notesListEl.addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-note-id]");
+  if (btn) {
+    const id = btn.dataset.noteId;
+    savedNotes = savedNotes.filter(n => n.id !== id);
+    safeSet(STORAGE_KEYS.NOTES, JSON.stringify(savedNotes));
+    renderMessages();
+    renderSavedNotes();
+  }
+});
+
+function exportSavedNotes() {
+  if (savedNotes.length === 0) return;
+  const today = new Date().toISOString().slice(0, 10);
+  const sorted = [...savedNotes].sort((a, b) => (a.savedAt || "").localeCompare(b.savedAt || ""));
+  let md = "# Brainerd Family Trip — Saved Notes\n\n";
+  md += "**Trip:** May 23–29, 2026 (Memorial Day week)\n";
+  md += "**Crew:** Grandparents, two couples, daughters 7 & 9, niece 4\n";
+  md += "**Exported:** " + today + "\n\n";
+  if (favorites.length > 0) {
+    md += "## ⭐ Favorite Places\n\n";
+    for (const fav of favorites) md += "- " + fav.name + "\n";
+    md += "\n";
+  }
+  md += "## 📌 Saved Q&A\n\n";
+  for (const note of sorted) {
+    md += "### " + note.question + "\n\n";
+    // Convert bracketed places to bold for export readability
+    const cleanAnswer = note.answer.replace(/\[([^\]]+)\]/g, "**$1**");
+    md += cleanAnswer + "\n\n";
+    md += "*Saved " + new Date(note.savedAt).toLocaleDateString() + "*\n\n---\n\n";
+  }
+  const blob = new Blob([md], { type: "text/markdown;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "brainerd-trip-notes-" + today + ".md";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+exportBtn.addEventListener("click", exportSavedNotes);
+
+messagesEl.addEventListener("click", (e) => {
+  const saveBtn = e.target.closest(".save-msg-btn");
+  if (saveBtn) {
+    toggleSaveNote(saveBtn.dataset.msgId, parseInt(saveBtn.dataset.msgIdx, 10));
+  }
+});
+
+function renderFavorites() {
+  savedPlacesEl.innerHTML = "";
+  if (favorites.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.style.padding = "12px 8px";
+    empty.innerHTML = "No saved places yet. Tap ☆ on any place name in the chat to add it.<br/><br/>Saved spots stick around between visits and can be opened on Google Maps.";
+    savedPlacesEl.appendChild(empty);
+    mapAllBtn.classList.add("disabled");
+    mapAllBtn.href = "#";
+    return;
+  }
+
+  // Group by category
+  const groups = {};
+  for (const fav of favorites) {
+    const cat = fav.category || "other";
+    if (!groups[cat]) groups[cat] = [];
+    groups[cat].push(fav);
+  }
+
+  // Render in defined order, then anything else
+  const orderedCats = CATEGORY_ORDER.filter(c => groups[c]).concat(
+    Object.keys(groups).filter(c => !CATEGORY_ORDER.includes(c))
+  );
+
+  for (const cat of orderedCats) {
+    const meta = CATEGORY_META[cat] || { label: "Other", icon: "📌" };
+    const section = document.createElement("div");
+    section.className = "saved-cat";
+    const items = groups[cat].map(fav => `
+      <li>
+        <span class="fav-name">${escapeHtml(fav.name)}</span>
+        <span class="place-actions">
+          <a href="${mapsUrlForPlace(fav.name)}" target="_blank" rel="noopener" title="Open in Google Maps">🗺️</a>
+          <button data-remove="${escapeHtml(fav.name)}" title="Remove">×</button>
+        </span>
+      </li>
+    `).join("");
+    section.innerHTML = `
+      <div class="saved-cat-header">${meta.icon} ${meta.label} (${groups[cat].length})</div>
+      <ul>${items}</ul>
+    `;
+    savedPlacesEl.appendChild(section);
+  }
+
+  // Enable "View all on map" button
+  mapAllBtn.classList.remove("disabled");
+  mapAllBtn.href = mapsUrlForAll();
+}
+
+// ============================================================================
+// STAR / FAVORITE LOGIC
+// ============================================================================
+function toggleFavorite(name) {
+  const idx = favorites.findIndex(f => f.name.toLowerCase() === name.toLowerCase());
+  if (idx >= 0) {
+    favorites.splice(idx, 1);
+  } else {
+    const place = findPlace(name);
+    favorites.push({
+      name: place.name || name,
+      category: place.category || "other",
+      area: place.area || "",
+      tier: place.tier || null,
+      added: new Date().toISOString()
+    });
+  }
+  safeSet(STORAGE_KEYS.FAVORITES, JSON.stringify(favorites));
+  renderMessages();
+  renderFavorites();
+}
+
+messagesEl.addEventListener("click", (e) => {
+  const star = e.target.closest(".star-btn");
+  if (star) { toggleFavorite(star.dataset.name); return; }
+  const userBtn = e.target.closest(".user-btn");
+  if (userBtn) { setUser(userBtn.dataset.userId); return; }
+});
+
+savedPlacesEl.addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-remove]");
+  if (btn) toggleFavorite(btn.dataset.remove);
+});
+
+// Tab switching
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    document.getElementById("panel-" + tab.dataset.tab).classList.add("active");
+  });
+});
+
+// ============================================================================
+// CHAT — uses Claude if available, falls back to keyword matching offline
+// ============================================================================
+function buildPrompt(question) {
+  const vibeInstruction = selectedVibes.length === 3
+    ? "VIBE MIX: User wants a balanced mix across all three vibes (Tried & True classic, Divebar Gem, Modern). When suggesting 3+ restaurants, try to span at least 2 of the three. When suggesting 1-2, pick what best fits the question regardless of tier."
+    : `VIBE FILTER: User has filtered to only these vibes: ${selectedVibes.map(v => VIBE_LABELS[v]).join(", ")}. For restaurant suggestions, ONLY pull from places with a 'tier' field matching: [${selectedVibes.join(", ")}]. If a question is non-restaurant, ignore this filter.`;
+
+  const user = currentUserId ? getUser(currentUserId) : null;
+  let personaInstruction = "";
+  if (user && user.type === "adult") {
+    personaInstruction = `\n\nWHO YOU'RE TALKING TO: **${user.name}** — adult, can take a joke.
+
+TONE FOR ADULTS — IMPORTANT:
+- Be sarcastic, dry, witty, slightly snarky. You're a chatbot Paul Bunyan with opinions and you've seen some things.
+- If the question is genuinely silly or stupid, feel free to say so ("That's a stupid question, but here's the answer…", "Of course you want to know that. Fine."). Then ALWAYS give a legitimate, helpful answer with real recommendations from the data.
+- Roast the asker lightly when warranted. Don't be precious. Adults can handle being teased.
+- Don't be cruel about other family members — light ribbing is fine, mean-spirited isn't.
+- Sarcasm < helpfulness. The actual recommendations and quotes must still be solid.
+- Address ${user.name} by name when natural.
+- Examples of tone: "Look, ${user.name}, I'm not running a concierge service for indecisive humans, but…", "Sure, you could go to [Notch 8]. Or you could keep agonizing about it from a cabin you're not enjoying. Your call."`;
+  } else if (user && user.type === "kid") {
+    personaInstruction = `\n\nWHO YOU'RE TALKING TO: **${user.name}** — a KID (4-9 years old).
+
+TONE FOR KIDS — IMPORTANT:
+- Be enthusiastic, warm, fun, encouraging. Like a fun uncle who knows tall tales.
+- Use simple, age-appropriate language. Short sentences. No sarcasm. No snark.
+- Sprinkle in fun Paul Bunyan tall-tale facts or Minnesota history when relevant — kids LOVE these. Examples:
+  - "Did you know my footprints made the 10,000 lakes of Minnesota? That's a LOT of footprints!"
+  - "Babe the Blue Ox is so big her horns are 42 axe handles apart!"
+  - "Brainerd is named after a railroad man! His name was John Gregory Smith Brainerd."
+  - "The pelicans at Mille Lacs Lake have wings that stretch wider than a kid is tall!"
+  - "Paul Bunyan Land in Brainerd was built way back in 1949 — that's a long time ago!"
+  - "Walleye is Minnesota's state fish — they're really tasty and have BIG teeth!"
+- Address ${user.name} by name. Be kind. Be a little goofy.
+- Skip the dive bars and adult dining — focus on kid stuff, fun outdoor activities, ice cream, mini golf, beaches, attractions, and family-friendly restaurants when food comes up.
+- Example tone: "Great question, ${user.name}! Here's what I'd do…" or "Ooh, this is a good one!"`;
+  }
+
+  return `You are Paul Bunyan, helping a family visiting the Brainerd, MN area. Stay grounded in the data — never invent places.${personaInstruction}
+
+THE FAMILY: ${BRAINERD_DATA.trip.travelers}
+TRIP DATES: ${BRAINERD_DATA.trip.dates}
+SEASONAL NOTES: ${BRAINERD_DATA.trip.notes}
+
+${vibeInstruction}
+
+Each restaurant in the data has a 'tier' field — feel free to play with the labels in your responses:
+- 'classic' = 🪵 Old Reliable (Ernie's 1917, Norway Ridge 1948, Bar Harbor 1937, Rafferty's 1981, etc.)
+- 'dive' = 🦝 Dive Bar Magic (Last Turn Saloon, Local 218, Bridge Tavern, Big Axe, The Skillet)
+- 'modern' = 🥑 Shiny & New (Notch 8, Main Street Ale House, Prairie Bay, Northern Cowboy)
+
+DEFAULT TONE (if no persona above): Warm, playful, a little punchy. The kids are 4, 7, and 9 — keep recs kid-aware overall.
+
+CRITICAL — DO NOT recommend these CLOSED places (mention they're closed only if user asks about them by name):
+${BRAINERD_DATA.restaurants_closed.map(r => "- " + r.name + ": " + r.note).join("\n")}
+
+CURATED DATA WITH REAL REVIEW QUOTES:
+${JSON.stringify({
+  restaurants_grill: BRAINERD_DATA.restaurants_grill,
+  lakes_and_outdoor: BRAINERD_DATA.lakes_and_outdoor,
+  pontoon_rentals: BRAINERD_DATA.pontoon_rentals,
+  kid_attractions: BRAINERD_DATA.kid_attractions,
+  food_sweet: BRAINERD_DATA.food_sweet,
+  day_trips: BRAINERD_DATA.day_trips,
+  rainy_day: BRAINERD_DATA.rainy_day,
+  memorial_day: BRAINERD_DATA.memorial_day,
+  practical: BRAINERD_DATA.practical
+}, null, 2)}
+
+FORMATTING RULES:
+- Be conversational and concise — 2-4 short paragraphs OR a short bulleted list.
+- When you name a specific place from the data, wrap it in [square brackets]. Example: "Try [Notch 8] for burgers."
+- For restaurants, append a tier badge in italics after the name: 🪵 Old Reliable | 🦝 Dive Bar Magic | 🥑 Shiny & New. Example: "Hit [Last Turn Saloon] _(🦝 Dive Bar Magic)_ for peanut shells on the floor."
+- When relevant, drop in a short review quote prefixed with "> " on its own line. Example: "> Half-pound burgers made from brisket, short rib, and chuck blend."
+- Use **bold** sparingly for emphasis on key takeaways.
+- Mention area or distance when helpful (e.g., "10 min south of Brainerd").
+- Flag caveats — opens Memorial Day weekend, priced high, takeout is iffy, etc.
+- Follow the TONE FOR ADULTS / TONE FOR KIDS instructions above strictly — they override generic guidance.
+- If the user's question is silly/funny, lean in. For adults: snark. For kids: silly tall tales.
+
+USER QUESTION: ${question}`;
+}
+
+function fallbackAnswer(question) {
+  const q = question.toLowerCase();
+  let categories = [];
+  if (/(burger|grill|restaurant|food|eat|dinner|lunch|breakfast|brunch|drink|brew|ale|cocktail|walleye|pub|saloon|supper)/i.test(q)) {
+    // Apply vibe filter
+    let filtered = BRAINERD_DATA.restaurants_grill.filter(r => selectedVibes.includes(r.tier));
+    // If filter wipes everything (shouldn't happen but defensive), show all
+    if (filtered.length === 0) filtered = BRAINERD_DATA.restaurants_grill;
+    // Try to balance across selected tiers — interleave
+    if (selectedVibes.length > 1) {
+      const buckets = {};
+      selectedVibes.forEach(v => buckets[v] = filtered.filter(r => r.tier === v));
+      const interleaved = [];
+      let i = 0;
+      while (interleaved.length < filtered.length) {
+        for (const v of selectedVibes) {
+          if (buckets[v][i]) interleaved.push(buckets[v][i]);
+        }
+        i++;
+      }
+      filtered = interleaved;
+    }
+    const vibeLabel = selectedVibes.length === 3 ? "Restaurants (mixed vibes)" : "Restaurants — " + selectedVibes.map(v => v === "classic" ? "🪵 Old Reliable" : v === "dive" ? "🦝 Dive Bar Magic" : "🥑 Shiny & New").join(" + ");
+    categories.push([vibeLabel, filtered, true]);
+  }
+  if (/(pontoon|boat rental|rent.*boat|jet ski|tubing)/i.test(q)) {
+    categories.push(["Pontoon Rentals", BRAINERD_DATA.pontoon_rentals, true]);
+  }
+  if (/(lake|boat|pontoon|fish|swim|beach|water|hike|trail|park|outdoor)/i.test(q)) {
+    categories.push(["Lakes & Outdoor", BRAINERD_DATA.lakes_and_outdoor]);
+  }
+  if (/(kid|child|attract|fun|play|girl|age|family|paul bunyan|mini golf|go.?kart)/i.test(q)) {
+    categories.push(["Kid Attractions", BRAINERD_DATA.kid_attractions]);
+  }
+  if (/(rain|indoor|stuck|wet)/i.test(q)) {
+    categories.push(["Rainy Day", BRAINERD_DATA.rainy_day]);
+  }
+  if (/(day trip|drive|nearby|hour away|itasca|mille lacs|park rapids|walker)/i.test(q)) {
+    categories.push(["Day Trips", BRAINERD_DATA.day_trips]);
+  }
+  if (/(ice cream|sweet|dessert|candy|fudge|treat)/i.test(q)) {
+    categories.push(["Sweet treats", BRAINERD_DATA.food_sweet]);
+  }
+  if (/(memorial|event|parade|opener|holiday)/i.test(q)) {
+    return "**Memorial Day weekend 2026 (May 23-25)** in the Brainerd area:\n\n" +
+      BRAINERD_DATA.memorial_day.map(e => "- " + e).join("\n");
+  }
+  if (categories.length === 0) {
+    categories = [
+      ["Top picks for your crew", BRAINERD_DATA.kid_attractions.slice(0, 2).concat(BRAINERD_DATA.restaurants_grill.slice(0, 2)).concat(BRAINERD_DATA.lakes_and_outdoor.slice(0, 1))]
+    ];
+  }
+  const user = currentUserId ? getUser(currentUserId) : null;
+  let out;
+  if (user && user.type === "adult") {
+    const adultIntros = [
+      `Alright ${user.name}, here you go. Try to choose this time:`,
+      `Sure, ${user.name}. Here's a list. Read it slowly:`,
+      `Easy question, ${user.name}. Don't overthink it:`,
+      `${user.name}, I've got receipts. Behold:`
+    ];
+    out = adultIntros[Math.floor(Math.random() * adultIntros.length)] + "\n";
+  } else if (user && user.type === "kid") {
+    const kidIntros = [
+      `Great question, ${user.name}! 🪓 Here are my favorites:`,
+      `Ooh, ${user.name}, you're gonna LOVE these:`,
+      `${user.name}, listen up! Paul's picks coming in hot:`
+    ];
+    out = kidIntros[Math.floor(Math.random() * kidIntros.length)] + "\n";
+  } else {
+    out = "Here's what I'd point you to:\n";
+  }
+  for (const [label, items, withQuotes] of categories) {
+    out += "\n### " + label + "\n";
+    for (const item of items.slice(0, 5)) {
+      const tierBadge = item.tier ? ` _(${item.tier === "classic" ? "🪵 Old Reliable" : item.tier === "dive" ? "🦝 Dive Bar Magic" : "🥑 Shiny & New"})_` : "";
+      out += "- [" + item.name + "]" + tierBadge + " (" + item.area + ") — " + item.note + "\n";
+      if (withQuotes && item.quote) {
+        out += "> " + item.quote + "\n";
+      }
+    }
+  }
+  return out;
+}
+
+function uid() { return "n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+let isAsking = false;
+
+async function askBot(question) {
+  if (isAsking) return; // prevent double-fires
+  isAsking = true;
+  history.push({ role: "user", text: question, id: uid() });
+  safeSet(STORAGE_KEYS.HISTORY, JSON.stringify(history));
+  renderMessages();
+  // Scroll the user's message into view (top of pane)
+  const userIdx = history.length - 1;
+  requestAnimationFrame(() => scrollMessageToTop(userIdx));
+
+  // Add a separate thinking indicator after the user message
+  const loadingMessages = [
+    "Paul is sharpening his axe…",
+    "Babe is finding her sunscreen…",
+    "Asking the loons for recommendations…",
+    "Checking the cabin for clean towels…",
+    "Counting walleye on the lake…",
+    "Polishing Paul's mustache…",
+    "Untangling the fishing line…",
+    "Negotiating with mosquitoes…",
+    "Translating from Minnesotan…",
+    "Checking which supper club has the best 7pm slot…",
+    "Reading the fine print on the pontoon waiver…"
+  ];
+  const thinking = document.createElement("div");
+  thinking.className = "msg bot thinking";
+  thinking.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span> ' + loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
+  messagesEl.appendChild(thinking);
+
+  sendBtn.disabled = true;
+  inputEl.disabled = true;
+  // Disable chips and prompts while loading
+  document.querySelectorAll(".chip, .prompt-pill").forEach(b => b.disabled = true);
+
+  let answer;
+  try {
+    if (window.cowork && typeof window.cowork.askClaude === "function") {
+      const result = await window.cowork.askClaude(buildPrompt(question), []);
+      answer = (typeof result === "string") ? result : (result?.text || result?.content || JSON.stringify(result));
+    } else {
+      answer = fallbackAnswer(question);
+    }
+  } catch (err) {
+    console.error("askClaude failed:", err);
+    answer = fallbackAnswer(question) + "\n\n*(Using offline knowledge — couldn't reach Claude.)*";
+  }
+
+  thinking.remove();
+  history.push({ role: "bot", text: answer, id: uid() });
+  safeSet(STORAGE_KEYS.HISTORY, JSON.stringify(history));
+  renderMessages();
+  // Scroll the BOT response's TOP into view so the user reads from the beginning
+  const botIdx = history.length - 1;
+  requestAnimationFrame(() => scrollMessageToTop(botIdx));
+
+  sendBtn.disabled = false;
+  inputEl.disabled = false;
+  document.querySelectorAll(".chip, .prompt-pill").forEach(b => b.disabled = false);
+  inputEl.focus();
+  isAsking = false;
+  // Refresh prompt suggestions after each answer
+  renderPrompts();
+}
+
+// ============================================================================
+// EVENT WIRING
+// ============================================================================
+sendBtn.addEventListener("click", () => {
+  const text = inputEl.value.trim();
+  if (!text) return;
+  inputEl.value = "";
+  askBot(text);
+});
+
+inputEl.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendBtn.click();
+  }
+});
+
+document.getElementById("chips").addEventListener("click", (e) => {
+  const chip = e.target.closest(".chip");
+  if (chip) askBot(chip.dataset.q);
+});
+
+// Vibe filter toggle
+function renderVibePills() {
+  document.querySelectorAll("#vibe-row .vibe-pill").forEach(pill => {
+    if (selectedVibes.includes(pill.dataset.vibe)) {
+      pill.classList.add("active");
+    } else {
+      pill.classList.remove("active");
+    }
+  });
+}
+
+document.getElementById("vibe-row").addEventListener("click", (e) => {
+  const pill = e.target.closest(".vibe-pill");
+  if (!pill) return;
+  const v = pill.dataset.vibe;
+  if (selectedVibes.includes(v)) {
+    // Don't allow deselecting the last active vibe
+    if (selectedVibes.length === 1) return;
+    selectedVibes = selectedVibes.filter(x => x !== v);
+  } else {
+    selectedVibes = [...selectedVibes, v];
+  }
+  safeSet(STORAGE_KEYS.VIBES, JSON.stringify(selectedVibes));
+  renderVibePills();
+});
+
+document.getElementById("clear-chat").addEventListener("click", () => {
+  if (confirm("Clear all chat history?\n(Favorites and Saved Notes will be kept.)")) {
+    history = [];
+    safeSet(STORAGE_KEYS.HISTORY, JSON.stringify(history));
+    renderMessages();
+  }
+});
+
+// Initial render
+renderIdentityBar();
+renderVibePills();
+renderPrompts();
+renderMessages();
+renderFavorites();
+renderSavedNotes();
+inputEl.focus();
+</script>
+</body>
+</html>
