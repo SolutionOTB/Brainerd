@@ -56,62 +56,72 @@
   .app {
     display: grid;
     grid-template-columns: 1fr 290px;
-    grid-template-rows: auto auto 1fr auto;
+    grid-template-rows: auto 1fr auto;
     grid-template-areas:
       "header header"
-      "prompts prompts"
       "chat   sidebar"
       "input  sidebar";
     height: 100vh;
     max-width: 1200px;
     margin: 0 auto;
-    gap: 12px;
-    padding: 12px;
+    gap: 10px;
+    padding: 10px;
   }
   @media (max-width: 820px) {
     .app {
       grid-template-columns: 1fr;
       grid-template-areas:
         "header"
-        "prompts"
         "chat"
         "input"
         "sidebar";
-      grid-template-rows: auto auto minmax(300px, 1fr) auto auto;
+      grid-template-rows: auto minmax(360px, 1fr) auto auto;
       height: auto;
       min-height: 100vh;
+      gap: 8px;
+      padding: 8px;
     }
     .sidebar {
       max-height: none;
       order: 5;
     }
     header.banner { grid-template-columns: 1fr; min-height: auto; }
-    .banner-art { min-height: 140px; border-right: none; border-bottom: 3px solid var(--plaid-black); }
-    .banner-info h1 { font-size: 24px; }
-    .banner-info .sub { font-size: 13px; }
-    .banner-info { padding: 14px 18px; }
-    .prompts-bar { flex-wrap: wrap; }
-    .prompts-bar .label { border-right: none; padding-right: 0; padding-bottom: 4px; width: 100%; }
-    .vibe-row { padding: 8px 10px; }
+    .banner-art { min-height: 120px; max-height: 140px; border-right: none; border-bottom: 3px solid var(--plaid-black); }
+    .banner-info h1 { font-size: 22px; line-height: 1.05; }
+    .banner-info .sub { font-size: 12.5px; }
+    .banner-info { padding: 12px 16px; gap: 8px; }
+    .banner-dates { font-size: 12.5px; padding: 6px 10px; gap: 6px; margin-top: 8px; }
+    .banner-dates .dates { font-size: 14px; }
+    .vibe-row { padding: 8px 10px; gap: 6px; }
     .vibe-hint { display: none; }
-    .chips { padding: 8px 10px; }
+    .chips { padding: 8px 10px; gap: 5px; }
     .chip { font-size: 12px; padding: 5px 10px; }
     .msg { max-width: 95%; font-size: 14.5px; }
-    .input-wrap input { font-size: 16px; } /* prevents iOS zoom-in on focus */
+    .input-wrap { padding: 8px; }
+    .input-wrap input { font-size: 16px; padding: 9px 12px; } /* 16px prevents iOS zoom on focus */
+    .input-wrap button { padding: 9px 14px; font-size: 13px; }
   }
   @media (max-width: 500px) {
-    header.banner { grid-template-columns: auto 1fr; }
-    .trip-dates {
-      grid-column: 1 / -1;
-      border-left: none;
-      border-top: 3px solid var(--plaid-black);
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 8px 12px;
-    }
-    .trip-dates .label { font-size: 11px; }
+    /* Banner still STACKED (1 column) from the 820px rule above */
+    .banner-info h1 { font-size: 20px; line-height: 1.05; }
+    .banner-info .sub { display: none; }
+    .banner-art { min-height: 110px; max-height: 130px; }
+    .banner-art svg { max-height: 130px; }
+    .banner-info { padding: 10px 14px; }
+    .banner-dates { font-size: 11.5px; padding: 4px 9px; margin-top: 4px; }
+    .banner-dates .dates { font-size: 13px; }
+    .banner-dates .divider, .banner-dates span:last-child { display: none; }
+    .chip { font-size: 11.5px; padding: 4px 9px; }
+    .vibe-pill { font-size: 11.5px; padding: 4px 9px; }
+    .identity-bar { padding: 6px 10px; font-size: 12px; }
+    .messages { padding: 10px; gap: 10px; }
+    .msg { padding: 10px 12px; font-size: 14px; max-width: 95%; }
+    .sidebar { padding: 10px; }
+    .user-picker { padding: 14px; }
+    .user-picker h3 { font-size: 16px; }
+    .user-picker .user-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .user-picker .user-btn { padding: 8px 4px; font-size: 12.5px; }
+    .user-picker .user-btn .user-emoji { font-size: 22px; }
   }
 
   /* ===================== HEADER ===================== */
@@ -123,9 +133,10 @@
     box-shadow: var(--shadow);
     border: 3px solid var(--plaid-black);
     display: grid;
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 220px 1fr;
     align-items: stretch;
-    min-height: 180px;
+    min-height: 140px;
+    max-height: 200px;
   }
   .banner-art {
     background: linear-gradient(180deg, #2a4a78 0%, #1f4030 60%, #14291f 100%);
@@ -188,72 +199,24 @@
     background: rgba(246,236,210,0.4);
   }
 
-  /* ===================== ROTATING PROMPTS ===================== */
-  .prompts-bar {
-    grid-area: prompts;
-    background: var(--parchment);
-    border: 2px solid var(--wood);
-    border-radius: var(--radius);
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    box-shadow: var(--shadow);
-  }
-  .prompts-bar .label {
-    font-family: "Impact", sans-serif;
-    font-size: 13px;
-    letter-spacing: 0.05em;
-    color: var(--plaid-red-dark);
-    text-transform: uppercase;
-    flex-shrink: 0;
-    border-right: 2px dashed var(--wood);
-    padding-right: 12px;
-  }
-  .prompts-bar .prompts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    flex: 1;
-  }
-  .prompt-pill {
+  /* ===================== INLINE PROMPT LINKS (in welcome message) ===================== */
+  .msg.bot .prompt-link {
     background: var(--cream-soft);
     border: 1.5px solid var(--wood);
-    color: var(--ink);
-    padding: 6px 12px;
+    color: var(--pine-deep);
+    padding: 4px 10px;
     border-radius: 999px;
     font-size: 13px;
     cursor: pointer;
     font-family: Georgia, serif;
+    margin: 3px 4px 3px 0;
+    display: inline-block;
     transition: all 0.15s;
+    text-decoration: none;
   }
-  .prompt-pill:hover {
-    background: var(--plaid-red);
-    color: var(--cream);
-    border-color: var(--plaid-red-dark);
-  }
-  .prompt-pill.funny {
-    background: var(--ox-blue-soft);
-    border-color: var(--ox-blue);
-    font-style: italic;
-  }
-  .prompt-pill.funny:hover {
-    background: var(--ox-blue);
-    color: white;
-  }
-  .reroll-btn {
-    background: var(--pine);
-    color: var(--cream);
-    border: none;
-    border-radius: 999px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-size: 12px;
-    font-family: "Impact", sans-serif;
-    letter-spacing: 0.05em;
-    flex-shrink: 0;
-  }
-  .reroll-btn:hover { background: var(--pine-deep); }
+  .msg.bot .prompt-link:hover { background: var(--plaid-red); color: var(--cream); border-color: var(--plaid-red-dark); }
+  .msg.bot .prompt-link.funny { background: var(--ox-blue-soft); border-color: var(--ox-blue); font-style: italic; }
+  .msg.bot .prompt-link.funny:hover { background: var(--ox-blue); color: white; }
 
   /* ===================== CHAT ===================== */
   .chat-wrap {
@@ -269,12 +232,18 @@
   }
   .chips {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     gap: 6px;
-    padding: 10px 12px;
+    padding: 9px 12px;
     border-bottom: 2px solid var(--line);
     background: var(--parchment);
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
   }
+  .chips::-webkit-scrollbar { height: 4px; }
+  .chips::-webkit-scrollbar-thumb { background: var(--wood); border-radius: 2px; }
+  .chip { flex-shrink: 0; white-space: nowrap; }
   .chip {
     background: var(--pine);
     color: var(--cream);
@@ -399,6 +368,37 @@
   }
 
   /* Vibe filter row */
+  .vibe-toggle-row {
+    background: var(--cream-soft);
+    border-bottom: 1px solid var(--line);
+    padding: 4px 10px;
+  }
+  .vibe-toggle {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: Georgia, serif;
+    font-size: 12.5px;
+    padding: 4px 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 4px;
+  }
+  .vibe-toggle:hover { color: var(--ink); background: var(--parchment); }
+  .vibe-toggle-count {
+    font-size: 11px;
+    color: var(--wood);
+    background: var(--parchment);
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-family: "Impact", sans-serif;
+    letter-spacing: 0.03em;
+  }
+  .vibe-toggle-caret { transition: transform 0.15s; }
+  .vibe-row.collapsed { display: none; }
+  .vibe-toggle.expanded .vibe-toggle-caret { transform: rotate(180deg); }
   .vibe-row {
     display: flex;
     align-items: center;
@@ -437,12 +437,12 @@
     color: white;
     font-weight: 600;
   }
-  .vibe-pill.active.classic { background: var(--pine); border-color: var(--pine-deep); }
-  .vibe-pill.active.dive { background: var(--wood); border-color: #6b4220; }
-  .vibe-pill.active.modern { background: var(--ox-blue); border-color: #3a5e8f; }
-  .vibe-pill.classic.active::before { content: "✓ "; }
-  .vibe-pill.dive.active::before { content: "✓ "; }
-  .vibe-pill.modern.active::before { content: "✓ "; }
+  .vibe-pill.active.divy     { background: var(--wood);    border-color: #6b4220; }
+  .vibe-pill.active.modern   { background: var(--ox-blue); border-color: #3a5e8f; }
+  .vibe-pill.active.stuffy   { background: #5a4a78;        border-color: #3a2858; }
+  .vibe-pill.active.lake     { background: #2f6f8f;        border-color: #1f5070; }
+  .vibe-pill.active.delivery { background: var(--plaid-red); border-color: var(--plaid-red-dark); }
+  .vibe-pill.active.old      { background: var(--pine);    border-color: var(--pine-deep); }
   .vibe-hint {
     font-size: 11.5px;
     color: var(--muted);
@@ -500,25 +500,37 @@
     gap: 4px;
     background: var(--cream-soft);
     border: 1.5px solid var(--wood);
-    padding: 2px 8px;
+    padding: 3px 4px 3px 9px;
     border-radius: 6px;
     margin: 2px 4px 2px 0;
     font-size: 13.5px;
     font-weight: bold;
     color: var(--pine-deep);
     font-family: Georgia, serif;
+    cursor: pointer;
+    transition: background 0.15s;
   }
+  .msg.bot .place:hover { background: var(--parchment); }
+  .msg.bot .place.is-saved { background: #fbf2dc; border-color: var(--star); }
   .msg.bot .star-btn {
     background: none;
     border: none;
     cursor: pointer;
-    color: #c5b18c;
-    font-size: 16px;
-    padding: 0 2px;
+    color: #b8a070;
+    font-size: 19px;
+    padding: 2px 6px;
+    margin-left: 2px;
     line-height: 1;
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
   }
   .msg.bot .star-btn.starred { color: var(--star); }
-  .msg.bot .star-btn:hover { color: var(--star); }
+  .msg.bot .star-btn:hover, .msg.bot .star-btn:active { color: var(--star); background: rgba(214,163,42,0.12); }
   .msg.bot .msg-actions {
     margin-top: 8px;
     padding-top: 8px;
@@ -617,24 +629,6 @@
     margin: 0 0 6px 0;
     border-bottom: 2px solid var(--wood);
     padding-bottom: 4px;
-  }
-  .family-card {
-    background: var(--parchment);
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 13.5px;
-    line-height: 1.5;
-    border: 1.5px solid var(--wood);
-    position: relative;
-  }
-  .family-card .who {
-    font-weight: 700;
-    color: var(--plaid-red-dark);
-    margin-bottom: 6px;
-    font-family: "Impact", sans-serif;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    font-size: 13px;
   }
   /* Sidebar tabs */
   .tabs {
@@ -865,7 +859,7 @@
   <header class="banner">
     <div class="banner-art">
       <!-- Paul Bunyan + Babe SVG (vintage tourism poster style) — inspired by the Bemidji statues -->
-      <svg viewBox="0 0 280 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-label="Paul Bunyan and Babe the Blue Ox">
+      <svg viewBox="0 0 280 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-label="Paul Bunyan and Babe the Blue Ox">
         <defs>
           <pattern id="plaid" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
             <rect width="14" height="14" fill="#2d5e4a"/>
@@ -1158,13 +1152,6 @@
     </div>
   </header>
 
-  <!-- =================== ROTATING PROMPTS =================== -->
-  <div class="prompts-bar">
-    <div class="label">Suggested<br/>Questions</div>
-    <div class="prompts" id="prompts"></div>
-    <button class="reroll-btn" id="reroll" title="Show different suggestions">🔄 Reroll</button>
-  </div>
-
   <!-- =================== CHAT =================== -->
   <section class="chat-wrap">
     <div class="identity-bar" id="identity-bar" style="display:none">
@@ -1183,12 +1170,16 @@
       <button class="chip" data-q="What day trips within an hour of Brainerd are worth doing with the family?">🚗 Day Trips</button>
       <button class="chip red" data-q="What are good ice cream or dessert spots in the area?">🍦 Sweet Treats</button>
     </div>
-    <div class="vibe-row" id="vibe-row">
-      <span class="label">Vibe mix:</span>
-      <button class="vibe-pill classic active" data-vibe="classic" title="Old-school, established, Grandpa would approve">🪵 Old Reliable</button>
-      <button class="vibe-pill dive active" data-vibe="dive" title="Looks sketchy, tastes great. Peanut shells on the floor.">🦝 Dive Bar Magic</button>
-      <button class="vibe-pill modern active" data-vibe="modern" title="Newer, polished, slightly Instagrammable">🥑 Shiny &amp; New</button>
-      <span class="vibe-hint">Toggle to shape the picks</span>
+    <div class="vibe-toggle-row">
+      <button class="vibe-toggle" id="vibe-toggle">🍽️ Vibe filter <span class="vibe-toggle-count" id="vibe-toggle-count">all 6</span> <span class="vibe-toggle-caret">▾</span></button>
+    </div>
+    <div class="vibe-row collapsed" id="vibe-row">
+      <button class="vibe-pill divy active" data-vibe="divy" title="Looks rough, food's great">🦝 Divy</button>
+      <button class="vibe-pill modern active" data-vibe="modern" title="Newer, polished, current">🥑 Modern</button>
+      <button class="vibe-pill stuffy active" data-vibe="stuffy" title="Old-school supper-club energy">🎩 Stuffy</button>
+      <button class="vibe-pill lake active" data-vibe="lake" title="Lakefront / lake view">🏞️ Look at the Lake</button>
+      <button class="vibe-pill delivery active" data-vibe="delivery" title="They'll bring it to the cabin">🛵 Delivery</button>
+      <button class="vibe-pill old active" data-vibe="old" title="Been around forever — Grandpa-approved">🧓 Really Old &amp; Good</button>
     </div>
     <div class="messages" id="messages">
       <div class="msg bot" style="color:#6a5a48;font-style:italic">Loading Paul Bunyan's trip guide…</div>
@@ -1203,11 +1194,6 @@
 
   <!-- =================== SIDEBAR =================== -->
   <aside class="sidebar">
-    <div class="family-card">
-      <div class="who">🪵 Our Lumberjack Crew</div>
-      Grandparents, two couples, daughters age 7 &amp; 9, niece age 4
-    </div>
-
     <div class="tabs">
       <button class="tab active" data-tab="places">📍 Saved Places</button>
       <button class="tab" data-tab="notes">📌 Notes</button>
@@ -1215,7 +1201,7 @@
 
     <div class="tab-panel active" id="panel-places">
       <div id="saved-places-container"></div>
-      <a class="map-all-btn disabled" id="map-all-btn" href="#" target="_blank" rel="noopener">🗺️ View all on Google Maps</a>
+      <button class="map-all-btn disabled" id="map-all-btn" title="Opens each saved place as a Google Maps pin in a new tab">🗺️ Open All on Maps</button>
     </div>
 
     <div class="tab-panel" id="panel-notes">
@@ -1229,6 +1215,14 @@
 </div>
 
 <script>
+// ============================================================================
+// BACKEND CONFIG — set this to your Cloudflare Worker URL after deploying it.
+// If empty, the app tries Cowork's window.cowork.askClaude (when running in
+// Cowork) and otherwise falls back to local keyword matching.
+// See 2026-05-14-deploy-guide.md for setup instructions.
+// ============================================================================
+const BACKEND_URL = ""; // e.g. "https://brainerd-trip-chat-proxy.you.workers.dev"
+
 // ============================================================================
 // CURATED BRAINERD-AREA KNOWLEDGE (with REAL review quotes & sources)
 // Vetted May 2026: closed places (Iven's, Roundhouse, Dunmire's) removed.
@@ -1245,7 +1239,7 @@ const BRAINERD_DATA = {
     {
       name: "Notch 8 Chowhouse & Drinkery",
       area: "Brainerd (Northern Pacific Center)",
-      tier: "modern",
+      tiers: ["modern"],
       vibe: "Grill-style, elevated burgers, kid-friendly, railroad theme",
       rating: "4.3★ (382 reviews)",
       source: "Restaurant Guru / Tripadvisor",
@@ -1255,7 +1249,7 @@ const BRAINERD_DATA = {
     {
       name: "Ernie's on Gull",
       area: "East Gull Lake (since 1917)",
-      tier: "classic",
+      tiers: ["lake", "old"],
       vibe: "Lakeside grill, year-round family restaurant",
       rating: "Strong on Tripadvisor & Yelp",
       source: "Tripadvisor",
@@ -1265,7 +1259,7 @@ const BRAINERD_DATA = {
     {
       name: "371 Diner",
       area: "Baxter",
-      tier: "classic",
+      tiers: ["old"],
       vibe: "50s diner — burgers, malts, breakfast",
       rating: "4.5★ (3,283 reviews)",
       source: "Restaurant Guru",
@@ -1275,7 +1269,7 @@ const BRAINERD_DATA = {
     {
       name: "Northern Cowboy Flame N' Brew",
       area: "Brainerd (North Long Lake)",
-      tier: "modern",
+      tiers: ["modern", "lake"],
       vibe: "'Modern Northern' grill — replaced Iven's on the Bay",
       rating: "4.0★ (77 reviews)",
       source: "Tripadvisor",
@@ -1285,7 +1279,7 @@ const BRAINERD_DATA = {
     {
       name: "Main Street Ale House",
       area: "Downtown Nisswa",
-      tier: "modern",
+      tiers: ["modern"],
       vibe: "Pub-style burgers, creative menu, historic downtown",
       rating: "4.5★ (816+ reviews)",
       source: "Google / Tripadvisor",
@@ -1295,7 +1289,7 @@ const BRAINERD_DATA = {
     {
       name: "Big Axe Brewing Co.",
       area: "Main St, Nisswa",
-      tier: "dive",
+      tiers: ["divy"],
       vibe: "Brewery + kitchen, family + dog friendly",
       rating: "3.9★ (#9 of 27 in Nisswa)",
       source: "Tripadvisor / Yelp",
@@ -1305,7 +1299,7 @@ const BRAINERD_DATA = {
     {
       name: "Prairie Bay Grill",
       area: "Baxter",
-      tier: "modern",
+      tiers: ["modern"],
       vibe: "Wood-fired pizza + grill, locally sourced, slightly upscale",
       rating: "Mixed recent reviews — strong food when dining in",
       source: "Yelp / Heavy Table",
@@ -1315,7 +1309,7 @@ const BRAINERD_DATA = {
     {
       name: "Ganley's Family Restaurant",
       area: "Main St, Nisswa",
-      tier: "classic",
+      tiers: ["old"],
       vibe: "Family diner, burgers, malts, ice cream",
       rating: "Solid local favorite, kid-friendly",
       source: "Tripadvisor / Local",
@@ -1325,7 +1319,7 @@ const BRAINERD_DATA = {
     {
       name: "The Quarterdeck Grill",
       area: "Quarterdeck Resort, Gull Lake (Nisswa)",
-      tier: "classic",
+      tiers: ["lake"],
       vibe: "Lakefront, live music, casual",
       rating: "4.0★ — view is the draw",
       source: "Tripadvisor",
@@ -1335,7 +1329,7 @@ const BRAINERD_DATA = {
     {
       name: "Zorbaz on Gull Lake",
       area: "Nisswa",
-      tier: "classic",
+      tiers: ["lake", "divy"],
       vibe: "Lakefront pizza shack, super casual",
       rating: "Iconic local",
       source: "Local favorite / Tripadvisor",
@@ -1344,7 +1338,7 @@ const BRAINERD_DATA = {
     {
       name: "Rafferty's Pizza",
       area: "Brainerd, Nisswa, Crosslake locations",
-      tier: "classic",
+      tiers: ["old", "delivery"],
       vibe: "Family pizza joint — local favorite since 1981",
       rating: "#1 restaurant in Nisswa (Tripadvisor)",
       source: "Tripadvisor / Restaurantji",
@@ -1354,7 +1348,7 @@ const BRAINERD_DATA = {
     {
       name: "The Local 218",
       area: "Brainerd (a few blocks off main drag)",
-      tier: "dive",
+      tiers: ["divy"],
       vibe: "American bistro, hidden gem locals keep quiet about",
       rating: "Strong on Tripadvisor & Yelp",
       source: "Yelp / Tripadvisor",
@@ -1364,7 +1358,7 @@ const BRAINERD_DATA = {
     {
       name: "Norway Ridge Supper Club",
       area: "Pequot Lakes (rural — 25 min north)",
-      tier: "classic",
+      tiers: ["stuffy", "old"],
       vibe: "Classic Up North supper club, in business since 1948",
       rating: "Tripadvisor favorite — hidden gem",
       source: "Tripadvisor / OnlyInYourState",
@@ -1374,7 +1368,7 @@ const BRAINERD_DATA = {
     {
       name: "Bar Harbor Supper Club",
       area: "Lake Shore (Gull Lake) — since 1937",
-      tier: "classic",
+      tiers: ["stuffy", "lake", "old"],
       vibe: "Classic Gull Lake supper club",
       rating: "Mixed (great views, food inconsistent lately)",
       source: "Tripadvisor / Yelp",
@@ -1384,7 +1378,7 @@ const BRAINERD_DATA = {
     {
       name: "The Skillet Restaurant",
       area: "Brainerd",
-      tier: "dive",
+      tiers: ["divy", "old"],
       vibe: "Breakfast diner — biscuits & gravy destination",
       rating: "Local breakfast favorite",
       source: "Hidden gems lists",
@@ -1394,7 +1388,7 @@ const BRAINERD_DATA = {
     {
       name: "Last Turn Saloon & Eatery",
       area: "Downtown Brainerd",
-      tier: "dive",
+      tiers: ["divy", "old"],
       vibe: "Historic Brainerd saloon — peanut shells on the floor",
       rating: "4.4★ on Restaurant Guru (513 reviews)",
       source: "Tripadvisor / Restaurant Guru",
@@ -1404,7 +1398,7 @@ const BRAINERD_DATA = {
     {
       name: "The Bridge Tavern",
       area: "Crosby (30 min east — crossroads of MN-6 and CR-11)",
-      tier: "dive",
+      tiers: ["divy"],
       vibe: "Roadside tavern, juicy burgers, surprisingly great prime rib",
       rating: "Strong reviews across Tripadvisor & Yelp",
       source: "Tripadvisor / Restaurantji",
@@ -1545,27 +1539,13 @@ const FUNNY_PROMPTS = [
   "Where do I take a picture so it looks like we did more than we did?"
 ];
 
-function pickPrompts() {
-  // 4 real + 1 funny, shuffled
-  const shuffleReal = [...REAL_PROMPTS].sort(() => Math.random() - 0.5).slice(0, 4);
+// Pick 3 real prompts + 1 funny, shuffled — for inline welcome suggestions
+function pickPrompts(realCount = 3) {
+  const shuffleReal = [...REAL_PROMPTS].sort(() => Math.random() - 0.5).slice(0, realCount);
   const funny = FUNNY_PROMPTS[Math.floor(Math.random() * FUNNY_PROMPTS.length)];
   const all = [...shuffleReal.map(p => ({text: p, funny: false})), {text: funny, funny: true}];
   return all.sort(() => Math.random() - 0.5);
 }
-
-function renderPrompts() {
-  const container = document.getElementById("prompts");
-  container.innerHTML = "";
-  for (const p of pickPrompts()) {
-    const btn = document.createElement("button");
-    btn.className = "prompt-pill" + (p.funny ? " funny" : "");
-    btn.textContent = p.text;
-    btn.onclick = () => askBot(p.text);
-    container.appendChild(btn);
-  }
-}
-
-document.getElementById("reroll").addEventListener("click", renderPrompts);
 
 // ============================================================================
 // CHAT STATE
@@ -1590,11 +1570,21 @@ const USERS = [
   { id: "mae",     name: "Mae",     type: "kid",   emoji: "👶" }
 ];
 function getUser(id) { return USERS.find(u => u.id === id) || null; }
-const ALL_VIBES = ["classic", "dive", "modern"];
+const ALL_VIBES = ["divy", "modern", "stuffy", "lake", "delivery", "old"];
 const VIBE_LABELS = {
-  classic: "Old Reliable (tried-and-true, established — Grandpa approves)",
-  dive: "Dive Bar Magic (looks rough, food's great, peanut-shells-on-floor energy)",
-  modern: "Shiny & New (current, polished, slightly Instagrammable)"
+  divy:     "Divy — looks rough, food's great",
+  modern:   "Modern — newer, polished, current",
+  stuffy:   "Stuffy — old-school supper-club energy",
+  lake:     "Look at the Lake — lakefront / lake view",
+  delivery: "Delivery — they'll bring it to the cabin",
+  old:      "Really Old & Good — been around for ages"
+};
+const VIBE_ICONS = {
+  divy: "🦝", modern: "🥑", stuffy: "🎩", lake: "🏞️", delivery: "🛵", old: "🧓"
+};
+const VIBE_NAMES = {
+  divy: "Divy", modern: "Modern", stuffy: "Stuffy",
+  lake: "Look at the Lake", delivery: "Delivery", old: "Really Old & Good"
 };
 
 // Defensive localStorage — falls back to in-memory if blocked
@@ -1607,6 +1597,24 @@ function safeSet(key, val) {
   try { localStorage.setItem(key, val); }
   catch (e) { memStore[key] = val; }
 }
+// Tiny deterministic string hash for cache keys (DJB2)
+function simpleHash(s) {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(36);
+}
+
+// =============== PLACE LOOKUP + CATEGORIZATION (declared early to avoid TDZ) ===============
+const CATEGORY_META = {
+  restaurants_grill:   { label: "Eats & Drinks",      icon: "🍽️" },
+  pontoon_rentals:     { label: "On the Water",       icon: "⛵" },
+  lakes_and_outdoor:   { label: "Lakes & Outdoors",   icon: "🛶" },
+  kid_attractions:     { label: "Kid Stuff",          icon: "🎡" },
+  food_sweet:          { label: "Sweet Treats",       icon: "🍦" },
+  day_trips:           { label: "Day Trips",          icon: "🚗" },
+  rainy_day:           { label: "Rainy Day",          icon: "🌧️" }
+};
+const CATEGORY_ORDER = ["restaurants_grill","kid_attractions","lakes_and_outdoor","pontoon_rentals","food_sweet","day_trips","rainy_day"];
 
 let history = [];
 let favorites = [];
@@ -1624,19 +1632,23 @@ try {
     }
   }
 } catch (e) { /* ignore */ }
-// Re-categorize any favorites that are missing a category (e.g. from earlier sessions)
-favorites = favorites.map(f => {
-  if (!f.category || f.category === "other") {
-    const p = findPlace(f.name);
-    return { ...f, category: p.category || "other" };
-  }
-  return f;
-});
+// Re-categorize any favorites missing a category. Wrapped defensively.
+try {
+  favorites = favorites.map(f => {
+    if (!f.category || f.category === "other") {
+      const p = findPlace(f.name);
+      return { ...f, category: (p && p.category) || "other" };
+    }
+    return f;
+  });
+} catch (e) { console.warn("Re-categorize skipped:", e); }
 let selectedVibes = [];
 try { selectedVibes = JSON.parse(safeGet(STORAGE_KEYS.VIBES) || JSON.stringify(ALL_VIBES)); } catch (e) { selectedVibes = [...ALL_VIBES]; }
 if (!Array.isArray(selectedVibes) || selectedVibes.length === 0) selectedVibes = [...ALL_VIBES];
 
 let currentUserId = safeGet(STORAGE_KEYS.USER) || null;
+// Validate — clear if the stored ID isn't a known user
+if (currentUserId && !USERS.find(u => u.id === currentUserId)) currentUserId = null;
 
 const messagesEl = document.getElementById("messages");
 const inputEl = document.getElementById("input");
@@ -1645,19 +1657,6 @@ const savedPlacesEl = document.getElementById("saved-places-container");
 const mapAllBtn = document.getElementById("map-all-btn");
 const notesListEl = document.getElementById("notes-list");
 const exportBtn = document.getElementById("export-notes");
-
-// =============== PLACE LOOKUP + CATEGORIZATION ===============
-// Map data array -> human category label + emoji
-const CATEGORY_META = {
-  restaurants_grill:   { label: "Eats & Drinks",      icon: "🍽️" },
-  pontoon_rentals:     { label: "On the Water",       icon: "⛵" },
-  lakes_and_outdoor:   { label: "Lakes & Outdoors",   icon: "🛶" },
-  kid_attractions:     { label: "Kid Stuff",          icon: "🎡" },
-  food_sweet:          { label: "Sweet Treats",       icon: "🍦" },
-  day_trips:           { label: "Day Trips",          icon: "🚗" },
-  rainy_day:           { label: "Rainy Day",          icon: "🌧️" }
-};
-const CATEGORY_ORDER = ["restaurants_grill","kid_attractions","lakes_and_outdoor","pontoon_rentals","food_sweet","day_trips","rainy_day"];
 
 function findPlace(name) {
   const lname = name.toLowerCase();
@@ -1682,6 +1681,7 @@ function mapsUrlForPlace(name) {
 }
 
 function mapsUrlForAll() {
+  // Kept for backwards compat — not used now; "View all" opens individual tabs instead.
   if (favorites.length === 0) return "#";
   // Google Maps directions URL — shows all places on one map with a route between them
   const stops = favorites.map(f => encodeURIComponent(f.name + " Brainerd MN")).join("/");
@@ -1700,12 +1700,13 @@ function renderBotText(text) {
   html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   // Quote blocks: lines starting with >
   html = html.replace(/^&gt; (.+)$/gm, '<div class="quote">$1</div>');
-  // Bracketed place names -> chips with star
+  // Bracketed place names -> chips with star. Whole chip is tappable on mobile.
   html = html.replace(/\[([^\]]+)\]/g, (m, name) => {
     const isStarred = favorites.some(f => f.name.toLowerCase() === name.toLowerCase());
+    const placeClass = "place" + (isStarred ? " is-saved" : "");
     const starClass = isStarred ? "star-btn starred" : "star-btn";
     const starChar = isStarred ? "★" : "☆";
-    return `<span class="place">${escapeHtml(name)}<button class="${starClass}" data-name="${escapeHtml(name)}" title="Save to favorites">${starChar}</button></span>`;
+    return `<span class="${placeClass}" data-place-name="${escapeHtml(name)}">${escapeHtml(name)}<button class="${starClass}" data-name="${escapeHtml(name)}" title="Save to favorites">${starChar}</button></span>`;
   });
   // Bullets & headings
   const lines = html.split("\n");
@@ -1799,27 +1800,24 @@ function renderMessages() {
     let welcomeText;
     if (user && user.type === "kid") {
       welcomeText =
-        `**Hey ${user.name}!** 🪓 I'm Paul Bunyan!\n\n` +
-        `I'm the biggest lumberjack who ever lived — so big my footprints made the lakes of Minnesota. (No really, that's what people say!) My buddy Babe the Blue Ox is here too. She's friendly. Mostly.\n\n` +
-        `I know LOTS about the Brainerd Lakes — the best place to find a real giant Paul Bunyan statue, where the best ice cream is, and which lake has the most pelicans (it's Mille Lacs — they have hundreds!).\n\n` +
-        `Try asking me anything! Like:\n` +
-        `- *What's the most fun place for kids?*\n` +
-        `- *Tell me a Paul Bunyan story!*\n` +
-        `- *Where can I see a really BIG fish statue?*\n\n` +
-        `Tap a ⭐ next to any place to save it, so we don't forget!`;
+        `**Hey ${user.name}!** 🪓 I'm Paul Bunyan.\n\n` +
+        `So big my footprints made all 10,000 lakes of Minnesota. Babe says hi too.\n\n` +
+        `Ask me anything — best ice cream, biggest statue, where the loons live.\n\n` +
+        `__INLINE_PROMPTS__`;
     } else if (user) {
       welcomeText =
-        `**${user.name}.** Welcome. Try to keep up.\n\n` +
-        `I'm Paul Bunyan, allegedly the largest lumberjack in folk-history and now somehow a trip chatbot. I know the Brainerd Lakes — what's open in May 2026, what reviewers actually say, and where to send the grandparents while you sneak off for a beer.\n\n` +
-        `Quick rules: vibe pills up top shape my restaurant picks (🪵 Old Reliable / 🦝 Dive Bar Magic / 🥑 Shiny & New). Star a place to save it. Pin an answer to keep it. Don't ask me what 'fun' means — figure that out yourself.\n\n` +
-        `Some sample questions for the adults:\n` +
-        `- *Best dive bar with great food on a Tuesday?*\n` +
-        `- *Where do I hide from the in-laws for an afternoon?*\n` +
-        `- *Pick one classic and one modern for two dinners.*`;
+        `**${user.name}.** Try to keep up.\n\n` +
+        `Star a place to save it (sidebar). Pin an answer to keep it. Toggle vibe pills to shape picks. Ask me anything.\n\n` +
+        `__INLINE_PROMPTS__`;
     } else {
-      welcomeText = "Pick a person first, friend. Up there ☝️";
+      welcomeText = "Pick a person first. Up there ☝️";
     }
-    welcome.innerHTML = renderBotText(welcomeText);
+    // Inject clickable prompt pills inline
+    const prompts = pickPrompts(user && user.type === "kid" ? 2 : 3);
+    const promptsHtml = prompts.map(p =>
+      `<button class="prompt-link${p.funny ? " funny" : ""}" data-prompt="${escapeHtml(p.text)}">${escapeHtml(p.text)}</button>`
+    ).join("");
+    welcome.innerHTML = renderBotText(welcomeText).replace("__INLINE_PROMPTS__", '<div style="margin-top:6px">' + promptsHtml + '</div>');
     messagesEl.appendChild(welcome);
     return;
   }
@@ -2013,9 +2011,19 @@ function renderFavorites() {
     savedPlacesEl.appendChild(section);
   }
 
-  // Enable "View all on map" button
+  // Enable "Open all on Maps" button
   mapAllBtn.classList.remove("disabled");
-  mapAllBtn.href = mapsUrlForAll();
+}
+
+// Open each saved place as a Google Maps pin in its own new tab
+function openAllOnMaps() {
+  if (favorites.length === 0) return;
+  if (favorites.length > 6) {
+    if (!confirm("This will open " + favorites.length + " tabs — one Google Maps pin per saved place. Continue?")) return;
+  }
+  for (const fav of favorites) {
+    window.open(mapsUrlForPlace(fav.name), "_blank", "noopener");
+  }
 }
 
 // ============================================================================
@@ -2031,7 +2039,7 @@ function toggleFavorite(name) {
       name: place.name || name,
       category: place.category || "other",
       area: place.area || "",
-      tier: place.tier || null,
+      tiers: place.tiers || (place.tier ? [place.tier] : []),
       added: new Date().toISOString()
     });
   }
@@ -2041,10 +2049,15 @@ function toggleFavorite(name) {
 }
 
 messagesEl.addEventListener("click", (e) => {
+  // Star button OR anywhere on the place chip toggles save
   const star = e.target.closest(".star-btn");
   if (star) { toggleFavorite(star.dataset.name); return; }
+  const place = e.target.closest(".place[data-place-name]");
+  if (place) { toggleFavorite(place.dataset.placeName); return; }
   const userBtn = e.target.closest(".user-btn");
   if (userBtn) { setUser(userBtn.dataset.userId); return; }
+  const promptLink = e.target.closest(".prompt-link");
+  if (promptLink) { askBot(promptLink.dataset.prompt); return; }
 });
 
 savedPlacesEl.addEventListener("click", (e) => {
@@ -2066,39 +2079,39 @@ document.querySelectorAll(".tab").forEach(tab => {
 // CHAT — uses Claude if available, falls back to keyword matching offline
 // ============================================================================
 function buildPrompt(question) {
-  const vibeInstruction = selectedVibes.length === 3
-    ? "VIBE MIX: User wants a balanced mix across all three vibes (Tried & True classic, Divebar Gem, Modern). When suggesting 3+ restaurants, try to span at least 2 of the three. When suggesting 1-2, pick what best fits the question regardless of tier."
-    : `VIBE FILTER: User has filtered to only these vibes: ${selectedVibes.map(v => VIBE_LABELS[v]).join(", ")}. For restaurant suggestions, ONLY pull from places with a 'tier' field matching: [${selectedVibes.join(", ")}]. If a question is non-restaurant, ignore this filter.`;
+  const vibeInstruction = selectedVibes.length === ALL_VIBES.length
+    ? "VIBE MIX: All vibes are on — recommend whatever fits the question. Try to span tiers when listing multiple places."
+    : `VIBE FILTER: User has filtered to: ${selectedVibes.map(v => VIBE_LABELS[v]).join(", ")}. For restaurant recs, ONLY pull places whose 'tiers' array includes one of: [${selectedVibes.join(", ")}]. Non-restaurant questions: ignore this filter.`;
 
   const user = currentUserId ? getUser(currentUserId) : null;
   let personaInstruction = "";
   if (user && user.type === "adult") {
-    personaInstruction = `\n\nWHO YOU'RE TALKING TO: **${user.name}** — adult, can take a joke.
+    personaInstruction = `\n\nWHO: **${user.name}** — adult, can take a joke (and an insult).
 
-TONE FOR ADULTS — IMPORTANT:
-- Be sarcastic, dry, witty, slightly snarky. You're a chatbot Paul Bunyan with opinions and you've seen some things.
-- If the question is genuinely silly or stupid, feel free to say so ("That's a stupid question, but here's the answer…", "Of course you want to know that. Fine."). Then ALWAYS give a legitimate, helpful answer with real recommendations from the data.
-- Roast the asker lightly when warranted. Don't be precious. Adults can handle being teased.
-- Don't be cruel about other family members — light ribbing is fine, mean-spirited isn't.
-- Sarcasm < helpfulness. The actual recommendations and quotes must still be solid.
-- Address ${user.name} by name when natural.
-- Examples of tone: "Look, ${user.name}, I'm not running a concierge service for indecisive humans, but…", "Sure, you could go to [Notch 8]. Or you could keep agonizing about it from a cabin you're not enjoying. Your call."`;
+TONE FOR ADULTS — STRICT:
+- BE SHORT. 1–3 sentences, OR a 3–4 bullet list. Never paragraphs. Lead with the answer.
+- Snark, sarcasm, dry insults are encouraged. Open with a zinger when the question deserves one.
+- Call stupid questions stupid. Then answer them well.
+- Punchy beats polite. One-liners beat essays.
+- Don't be cruel about other family members. Light ribbing is fine.
+- Address ${user.name} by name when it lands.
+- Examples:
+  - "Stupid question, ${user.name}, but fine: [Ernie's on Gull] — lakeside since 1917. Done."
+  - "Adventurous tonight? Or are we doing the safe burger? Try [Notch 8] either way."
+  - "${user.name}, the kids are 4. Skip the supper club. [371 Diner] — burgers, milkshakes, exit clean."`;
   } else if (user && user.type === "kid") {
-    personaInstruction = `\n\nWHO YOU'RE TALKING TO: **${user.name}** — a KID (4-9 years old).
+    personaInstruction = `\n\nWHO: **${user.name}** — a KID (4–9 years old).
 
-TONE FOR KIDS — IMPORTANT:
-- Be enthusiastic, warm, fun, encouraging. Like a fun uncle who knows tall tales.
-- Use simple, age-appropriate language. Short sentences. No sarcasm. No snark.
-- Sprinkle in fun Paul Bunyan tall-tale facts or Minnesota history when relevant — kids LOVE these. Examples:
-  - "Did you know my footprints made the 10,000 lakes of Minnesota? That's a LOT of footprints!"
-  - "Babe the Blue Ox is so big her horns are 42 axe handles apart!"
-  - "Brainerd is named after a railroad man! His name was John Gregory Smith Brainerd."
-  - "The pelicans at Mille Lacs Lake have wings that stretch wider than a kid is tall!"
-  - "Paul Bunyan Land in Brainerd was built way back in 1949 — that's a long time ago!"
-  - "Walleye is Minnesota's state fish — they're really tasty and have BIG teeth!"
-- Address ${user.name} by name. Be kind. Be a little goofy.
-- Skip the dive bars and adult dining — focus on kid stuff, fun outdoor activities, ice cream, mini golf, beaches, attractions, and family-friendly restaurants when food comes up.
-- Example tone: "Great question, ${user.name}! Here's what I'd do…" or "Ooh, this is a good one!"`;
+TONE FOR KIDS — STRICT:
+- BE SHORT. 1–3 sentences, OR a 3-bullet list. Never paragraphs.
+- Enthusiastic, simple words, no snark.
+- Drop ONE fun fact MAX per answer when relevant (Paul Bunyan tall tales, MN trivia). Don't dump.
+- Skip dive bars and grown-up dining. Lean into kid stuff: ice cream, mini golf, beaches, attractions, family-friendly food.
+- Address ${user.name} by name. Be a little goofy.
+- Fun facts you can sprinkle (one at a time): my footprints made the 10,000 lakes / Babe's horns are 42 axe-handles apart / walleye is the MN state fish / Paul Bunyan Land has been around since 1949 / Mille Lacs pelicans have huge wings.
+- Examples:
+  - "Great question, ${user.name}! [Pirate's Cove] mini golf — pirate theme, kids love it. Did you know Babe's horns are 42 axe-handles apart? 🪓"
+  - "Ooh! Try [Paul Bunyan Land]. The giant Paul says your name out loud!"`;
   }
 
   return `You are Paul Bunyan, helping a family visiting the Brainerd, MN area. Stay grounded in the data — never invent places.${personaInstruction}
@@ -2109,10 +2122,14 @@ SEASONAL NOTES: ${BRAINERD_DATA.trip.notes}
 
 ${vibeInstruction}
 
-Each restaurant in the data has a 'tier' field — feel free to play with the labels in your responses:
-- 'classic' = 🪵 Old Reliable (Ernie's 1917, Norway Ridge 1948, Bar Harbor 1937, Rafferty's 1981, etc.)
-- 'dive' = 🦝 Dive Bar Magic (Last Turn Saloon, Local 218, Bridge Tavern, Big Axe, The Skillet)
-- 'modern' = 🥑 Shiny & New (Notch 8, Main Street Ale House, Prairie Bay, Northern Cowboy)
+Each restaurant has a 'tiers' array. Possible tiers:
+- 'divy' = 🦝 Divy (looks rough, food's great)
+- 'modern' = 🥑 Modern (newer, polished)
+- 'stuffy' = 🎩 Stuffy (formal supper-club)
+- 'lake' = 🏞️ Look at the Lake (lakefront/lake view)
+- 'delivery' = 🛵 Delivery (they bring food to you)
+- 'old' = 🧓 Really Old & Good (been around for ages)
+A place can have multiple tiers. When citing one, append ALL matching tier badges in italics. Example: "[Bar Harbor Supper Club] _(🎩 Stuffy, 🏞️ Look at the Lake, 🧓 Really Old & Good)_"
 
 DEFAULT TONE (if no persona above): Warm, playful, a little punchy. The kids are 4, 7, and 9 — keep recs kid-aware overall.
 
@@ -2132,15 +2149,15 @@ ${JSON.stringify({
   practical: BRAINERD_DATA.practical
 }, null, 2)}
 
-FORMATTING RULES:
-- Be conversational and concise — 2-4 short paragraphs OR a short bulleted list.
-- When you name a specific place from the data, wrap it in [square brackets]. Example: "Try [Notch 8] for burgers."
-- For restaurants, append a tier badge in italics after the name: 🪵 Old Reliable | 🦝 Dive Bar Magic | 🥑 Shiny & New. Example: "Hit [Last Turn Saloon] _(🦝 Dive Bar Magic)_ for peanut shells on the floor."
-- When relevant, drop in a short review quote prefixed with "> " on its own line. Example: "> Half-pound burgers made from brisket, short rib, and chuck blend."
-- Use **bold** sparingly for emphasis on key takeaways.
-- Mention area or distance when helpful (e.g., "10 min south of Brainerd").
-- Flag caveats — opens Memorial Day weekend, priced high, takeout is iffy, etc.
-- Follow the TONE FOR ADULTS / TONE FOR KIDS instructions above strictly — they override generic guidance.
+FORMATTING RULES — HARD CAPS:
+- MAX LENGTH: 3 sentences OR 4 bullets. Shorter is better.
+- NO PARAGRAPHS. EVER. Bullets and one-liners only.
+- 🚨 EVERY time you name a place from the data, you MUST wrap it in [square brackets]. This is non-negotiable — the brackets become tappable saveable chips for the user. NEVER write "Notch 8" — always "[Notch 8]".
+- Append tier badges in italics after restaurant names. Use ALL matching tiers. Example: "[Last Turn Saloon] _(🦝 Divy, 🧓 Really Old & Good)_"
+- Quotes: optional. ONE short one max if used, prefixed "> ".
+- **bold** for the answer when helpful.
+- Distances/caveats in parens, not separate sentences. Example: "[Notch 8] (Brainerd, kid-friendly)"
+- TONE rules above override everything else.
 - If the user's question is silly/funny, lean in. For adults: snark. For kids: silly tall tales.
 
 USER QUESTION: ${question}`;
@@ -2149,26 +2166,14 @@ USER QUESTION: ${question}`;
 function fallbackAnswer(question) {
   const q = question.toLowerCase();
   let categories = [];
-  if (/(burger|grill|restaurant|food|eat|dinner|lunch|breakfast|brunch|drink|brew|ale|cocktail|walleye|pub|saloon|supper)/i.test(q)) {
-    // Apply vibe filter
-    let filtered = BRAINERD_DATA.restaurants_grill.filter(r => selectedVibes.includes(r.tier));
-    // If filter wipes everything (shouldn't happen but defensive), show all
+  if (/(burger|grill|restaurant|food|eat|dinner|lunch|breakfast|brunch|drink|brew|ale|cocktail|walleye|pub|saloon|supper|lake.*view|on the lake)/i.test(q)) {
+    // Apply vibe filter — place matches if ANY of its tiers is selected
+    const tiersOf = r => r.tiers || (r.tier ? [r.tier] : []);
+    let filtered = BRAINERD_DATA.restaurants_grill.filter(r => tiersOf(r).some(t => selectedVibes.includes(t)));
     if (filtered.length === 0) filtered = BRAINERD_DATA.restaurants_grill;
-    // Try to balance across selected tiers — interleave
-    if (selectedVibes.length > 1) {
-      const buckets = {};
-      selectedVibes.forEach(v => buckets[v] = filtered.filter(r => r.tier === v));
-      const interleaved = [];
-      let i = 0;
-      while (interleaved.length < filtered.length) {
-        for (const v of selectedVibes) {
-          if (buckets[v][i]) interleaved.push(buckets[v][i]);
-        }
-        i++;
-      }
-      filtered = interleaved;
-    }
-    const vibeLabel = selectedVibes.length === 3 ? "Restaurants (mixed vibes)" : "Restaurants — " + selectedVibes.map(v => v === "classic" ? "🪵 Old Reliable" : v === "dive" ? "🦝 Dive Bar Magic" : "🥑 Shiny & New").join(" + ");
+    const vibeLabel = selectedVibes.length === ALL_VIBES.length
+      ? "Restaurants (mixed vibes)"
+      : "Restaurants — " + selectedVibes.map(v => VIBE_ICONS[v] + " " + VIBE_NAMES[v]).join(" + ");
     categories.push([vibeLabel, filtered, true]);
   }
   if (/(pontoon|boat rental|rent.*boat|jet ski|tubing)/i.test(q)) {
@@ -2221,7 +2226,8 @@ function fallbackAnswer(question) {
   for (const [label, items, withQuotes] of categories) {
     out += "\n### " + label + "\n";
     for (const item of items.slice(0, 5)) {
-      const tierBadge = item.tier ? ` _(${item.tier === "classic" ? "🪵 Old Reliable" : item.tier === "dive" ? "🦝 Dive Bar Magic" : "🥑 Shiny & New"})_` : "";
+      const tiers = item.tiers || (item.tier ? [item.tier] : []);
+      const tierBadge = tiers.length ? ` _(${tiers.map(t => VIBE_ICONS[t] + " " + VIBE_NAMES[t]).filter(Boolean).join(", ")})_` : "";
       out += "- [" + item.name + "]" + tierBadge + " (" + item.area + ") — " + item.note + "\n";
       if (withQuotes && item.quote) {
         out += "> " + item.quote + "\n";
@@ -2267,19 +2273,53 @@ async function askBot(question) {
   sendBtn.disabled = true;
   inputEl.disabled = true;
   // Disable chips and prompts while loading
-  document.querySelectorAll(".chip, .prompt-pill").forEach(b => b.disabled = true);
+  document.querySelectorAll(".chip, .prompt-link").forEach(b => b.disabled = true);
+
+  // Build the full prompt once — we'll hash it for the cache key
+  const fullPrompt = buildPrompt(question);
+  const cacheKey = "brainerd_resp_cache_v1:" + simpleHash(fullPrompt);
 
   let answer;
   try {
     if (window.cowork && typeof window.cowork.askClaude === "function") {
-      const result = await window.cowork.askClaude(buildPrompt(question), []);
+      // Cowork mode — call through the host
+      const result = await window.cowork.askClaude(fullPrompt, []);
       answer = (typeof result === "string") ? result : (result?.text || result?.content || JSON.stringify(result));
+      safeSet(cacheKey, answer); // cache for offline replay
+    } else if (BACKEND_URL && navigator.onLine !== false) {
+      // Hosted mode — call the Cloudflare Worker proxy
+      const resp = await fetch(BACKEND_URL, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ prompt: fullPrompt })
+      });
+      const data = await resp.json();
+      if (!resp.ok) {
+        // Rate-limited or budget-capped — try cache, then fall back
+        const friendly = data.error || "Hit a rate limit.";
+        const cached = safeGet(cacheKey);
+        if (cached) {
+          answer = cached + "\n\n*(Cached answer — " + friendly + ")*";
+        } else {
+          answer = fallbackAnswer(question) + "\n\n*(" + friendly + " Showing offline picks.)*";
+        }
+      } else {
+        answer = data.text || fallbackAnswer(question);
+        safeSet(cacheKey, answer);
+      }
     } else {
-      answer = fallbackAnswer(question);
+      // Offline or no backend — try the response cache first, then keyword fallback
+      const cached = safeGet(cacheKey);
+      answer = cached
+        ? cached + "\n\n*(Cached — you're offline. Reconnect for fresh answers.)*"
+        : fallbackAnswer(question);
     }
   } catch (err) {
-    console.error("askClaude failed:", err);
-    answer = fallbackAnswer(question) + "\n\n*(Using offline knowledge — couldn't reach Claude.)*";
+    console.error("askBot failed:", err);
+    const cached = safeGet(cacheKey);
+    answer = cached
+      ? cached + "\n\n*(Cached answer — couldn't reach Claude.)*"
+      : fallbackAnswer(question) + "\n\n*(Using offline knowledge — couldn't reach Claude.)*";
   }
 
   thinking.remove();
@@ -2292,11 +2332,9 @@ async function askBot(question) {
 
   sendBtn.disabled = false;
   inputEl.disabled = false;
-  document.querySelectorAll(".chip, .prompt-pill").forEach(b => b.disabled = false);
+  document.querySelectorAll(".chip, .prompt-link").forEach(b => b.disabled = false);
   inputEl.focus();
   isAsking = false;
-  // Refresh prompt suggestions after each answer
-  renderPrompts();
 }
 
 // ============================================================================
@@ -2321,6 +2359,12 @@ document.getElementById("chips").addEventListener("click", (e) => {
   if (chip) askBot(chip.dataset.q);
 });
 
+mapAllBtn.addEventListener("click", (e) => {
+  if (mapAllBtn.classList.contains("disabled")) return;
+  e.preventDefault();
+  openAllOnMaps();
+});
+
 // Vibe filter toggle
 function renderVibePills() {
   document.querySelectorAll("#vibe-row .vibe-pill").forEach(pill => {
@@ -2330,7 +2374,22 @@ function renderVibePills() {
       pill.classList.remove("active");
     }
   });
+  // Update the toggle button count
+  const countEl = document.getElementById("vibe-toggle-count");
+  if (countEl) {
+    countEl.textContent = selectedVibes.length === ALL_VIBES.length
+      ? "all 6"
+      : selectedVibes.length + " of 6";
+  }
 }
+
+// Vibe row collapse/expand
+document.getElementById("vibe-toggle").addEventListener("click", () => {
+  const row = document.getElementById("vibe-row");
+  const tog = document.getElementById("vibe-toggle");
+  row.classList.toggle("collapsed");
+  tog.classList.toggle("expanded");
+});
 
 document.getElementById("vibe-row").addEventListener("click", (e) => {
   const pill = e.target.closest(".vibe-pill");
@@ -2358,7 +2417,6 @@ document.getElementById("clear-chat").addEventListener("click", () => {
 // Initial render
 renderIdentityBar();
 renderVibePills();
-renderPrompts();
 renderMessages();
 renderFavorites();
 renderSavedNotes();
